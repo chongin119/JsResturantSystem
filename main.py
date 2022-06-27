@@ -3,13 +3,14 @@ from flask import Blueprint
 from admin import adminBlue
 from auth import authBlue
 from user import userBlue
-
+from chef import chefBlue
 
 
 web = Flask(__name__)
 web.register_blueprint(adminBlue)
 web.register_blueprint(authBlue)
 web.register_blueprint(userBlue)
+web.register_blueprint(chefBlue)
 web.config.from_pyfile('./config.py')
 
 @web.route('/')
