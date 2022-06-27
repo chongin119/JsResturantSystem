@@ -9,6 +9,8 @@
         
         {% endblock title %}
     </title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/bootstrap.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/myCss.css') }}">
 </head>
 <body>
     {% block body %}
@@ -18,5 +20,7 @@
     {% block script %}
         
     {% endblock script %}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery-3.6.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
