@@ -1,4 +1,5 @@
 import sqlite3 as s3
+from ENDE import myAES
 
 class myDB():
     def __init__(self,path):
@@ -14,6 +15,18 @@ class myDB():
         if info != None:
             return False
         return True
+
+    def validLogin(self,username,password,op):
+        info = self.c.execute("""SELECT username,password FROM userInfo WHERE username == ?""",(username,)).fetchone()
+        if info == None:
+            return False
+        
+        operator = myAES(op)
+        validPassword = operator.decrypt(info[1])
+        
+        if validPassword != password:
+            return False
+        return info[0]
 
     #insert del update
     def insertUser(self,username,password):
