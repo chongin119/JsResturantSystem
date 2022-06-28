@@ -5,4 +5,5 @@ userBlue = Blueprint('userBlue',__name__,url_prefix='/user')
 
 @userBlue.route('/')
 def index():
+    print(session["username"])
     return "index"

@@ -13,6 +13,8 @@ web.register_blueprint(userBlue)
 web.register_blueprint(chefBlue)
 web.config.from_pyfile('./config.py')
 
+#remember to add before request
+
 @web.route('/')
 def nothing():
     return redirect('/auth/')
