@@ -13,14 +13,17 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/myCss.css') }}">
 </head>
 <body>
+    <img src="{{url_for('static', filename = 'assets/img/authBackground.png')}}" class="authbackground"/>
     {% block body %}
         
     {% endblock body %}
     
+    
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery-3.6.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/bootstrap.bundle.min.js') }}"></script>
+
     {% block script %}
         
     {% endblock script %}
-    <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery-3.6.0.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename = 'js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

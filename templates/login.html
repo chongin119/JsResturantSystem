@@ -1,7 +1,43 @@
 {% extends 'originalAuthLayout.html' %}
 
 {% block title %}
-    未名餐饮系统
+    未名餐饮登入
 {% endblock title %}
 
+{% block body %}
+
+<div class="registerbackground position-absolute">
+    <h1 class="text-center text-primary fw-bold mt-5 text-danger" style="height: 10vh;font-size: xxx-large">未名餐饮平台</h1>
+    <div class="bg-light p-5 position-absolute top-50 start-50 translate-middle shadow rounded-3 ">
+        <form class="row g-3" action="#" method="post">
+            <h1 class="text-center">
+                平台登录
+            </h1>
+            <div class="col-12">
+              <label for="inputUsernameLogin" class="form-label">帐号</label>
+              <input name="username" type="text" class="form-control" id="inputUsernameLogin" required>
+            </div>
+            <div class="col-12">
+              <label for="inputPasswordLogin" class="form-label">密码</label>
+              <input name="password" type="password" class="form-control" id="inputPasswordLogin" required>
+            </div>
+            <div class="col-12 text-danger text-left">
+              {% with messages = get_flashed_messages() %}  
+                {% if messages %}  
+                      {% for message in messages %}  
+                            <p class="m-0">{{ message }}</p>  
+                      {% endfor %}  
+                {% endif %}  
+              {% endwith %}
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-danger">按此登录</button>
+            </div>
+            <div class="col-12 text-center">
+              <a href="{{ url_for('authBlue.register') }}" id="ToRegister" class="link-secondary">还没有帐号？按此注册！</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock body %}
 

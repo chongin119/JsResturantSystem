@@ -1,0 +1,17 @@
+body{
+    --default-border-radius: 1rem;
+    font-family: SimHei;
+    
+}
+
+.registerbackground{
+    width: 100%;
+    height: 100%;
+}
+
+.authbackground{
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    position: absolute;
+}

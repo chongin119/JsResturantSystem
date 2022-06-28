@@ -1,1 +1,52 @@
 {% extends 'originalAuthLayout.html' %}
+
+{% block title %}
+注册
+{% endblock title %}
+
+{% block body %}
+<div class="registerbackground position-absolute">
+    <h1 class="text-center text-primary fw-bold mt-5 text-danger" style="height: 10vh;font-size: xxx-large">未名餐饮平台</h1>
+    <div class="bg-light p-5 position-absolute top-50 start-50 translate-middle shadow rounded-3">
+        <form class="row g-3" action="#" method="post">
+            <h1 class="text-center">
+                平台注册
+            </h1>
+            <div class="col-12">
+              <label for="inputUsername" class="form-label">帐号</label>
+              <input name="username" placeholder="请输入5 - 10位数字英语帐号" type="text" class="form-control" id="inputUsername" maxlength="10" required>
+              <div class="valid-feedback">
+                此帐号可使用
+              </div>
+              <div class="invalid-feedback" id="usernameInvalidFeedback">
+                此帐号不可使用
+              </div>
+            </div>
+            <div class="col-12">
+              <label for="inputPassword" class="form-label">密码</label>
+              <input name="password" type="password" class="form-control" id="inputPassword" required>
+            </div>
+            <div class="col-12">
+                <label for="inputConPassword" class="form-label">重覆密码</label>
+                <input type="password" class="form-control" id="inputConPassword" required>
+                <div class="valid-feedback">
+                    密码重覆验证成功
+                </div>
+                <div class="invalid-feedback"  id="passwordInvalidFeedback">
+                    请输入两次重覆密码
+                </div>
+            </div>
+            <div class="col-12 mt-xl-5">
+              <button type="submit" class="btn btn-danger disabled" id="submitBtn">按此注册</button>
+            </div>
+            <div class="col-12 text-center">
+                <a href="{{ url_for('authBlue.login') }}" id="ToRegister" class="link-secondary">已有帐号？按此登录吧！</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock body %}
+
+{% block script %}
+    <script type="text/javascript" src="{{url_for('static', filename='js/authPageJs.js')}}"></script>
+{% endblock script %}

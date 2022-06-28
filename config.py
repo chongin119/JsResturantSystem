@@ -1,1 +1,2 @@
-dbPath = './web.db'
+DBPATH = 'web.db'
+AESkey = 'IloveJsLessonTeachingByZW'
