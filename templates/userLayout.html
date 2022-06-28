@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        
+        {% endblock title %}
+    </title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/bootstrap.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/myCss.css') }}">
+</head>
+<body>
+    <div class="Main">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger fw-bold">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" href="#">Features</a>
+                    <a class="nav-link" href="#">Pricing</a>
+                    <a class="nav-link disabled">Disabled</a>
+                </div>
+                </div>
+            </div>
+        </nav>
+        <div>
+            <h1>111</h1>
+            <h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1>
+        </div> 
+        {% block body %}
+        
+        {% endblock body %}
+        
+    </div>
+    <button type="button" class="btn btn-light position-fixed bottom-0 end-0 mb-5 me-5 rounded-pill">
+        <img style="width: 15px;height: 15px" src="{{ url_for('static', filename = 'assets/img/shoppingCar.png') }}" />
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          99+
+          <span class="visually-hidden">unread messages</span>
+        </span>
+    </button>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery-3.6.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/bootstrap.bundle.min.js') }}"></script>
+
+    {% block script %}
+        
+    {% endblock script %}
+</body>
+</html>
