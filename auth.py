@@ -21,9 +21,15 @@ def login():
         result = db.validLogin(username, password, op)
         del db
 
-        if result:
-            session["username"] = result
-            return redirect(url_for('userBlue.index'))
+        if result != False:
+            permission = result['permission']
+            session["username"] = result['username']
+            if permission == 0:
+                return redirect(url_for('adminBlue.index'))
+            elif permission == 1:
+                return redirect(url_for('chefBlue.index'))
+            else:
+                return redirect(url_for('userBlue.index'))
         else:
             flash("登录错误")
             return redirect(url_for('authBlue.login'))

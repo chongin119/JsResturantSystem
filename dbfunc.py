@@ -17,7 +17,7 @@ class myDB():
         return True
 
     def validLogin(self,username,password,op):
-        info = self.c.execute("""SELECT username,password FROM userInfo WHERE username == ?""",(username,)).fetchone()
+        info = self.c.execute("""SELECT username,password,permission FROM userInfo WHERE username == ?""",(username,)).fetchone()
         if info == None:
             return False
         
@@ -26,7 +26,7 @@ class myDB():
         
         if validPassword != password:
             return False
-        return info[0]
+        return {"username":info[0],"permission":info[2]}
 
     #insert del update
     def insertUser(self,username,password):
