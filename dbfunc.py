@@ -1,4 +1,6 @@
 import sqlite3 as s3
+
+from sqlalchemy import null
 from ENDE import myAES
 
 class myDB():
@@ -36,7 +38,7 @@ class myDB():
         else:
             id = int(id[0]) + 1
 
-        self.c.execute("""INSERT INTO userInfo (id,username,password,permission) VALUES (?,?,?,?)""",(id,username,password,2))
+        self.c.execute("""INSERT INTO userInfo (id,username,password,profilePhoto,email,phoneNum,permission) VALUES (?,?,?,?,?,?,?)""",(id,username,password,None,None,None,2))
 
         self.db.commit()
 
