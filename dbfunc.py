@@ -111,6 +111,16 @@ class myDB():
 
         return pic
 
+    #获取购物车货物
+    def getCarLst(self,id,count):
+        result = self.c.execute("""SELECT f.name,f.price,r.name 
+                                    FROM food AS f LEFT JOIN resturant AS r 
+                                    ON f.sellFrom == r.id 
+                                    WHERE f.id == ?""",(id,)).fetchone()
+        result = list(result)
+        result.append(count)
+        return result
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()

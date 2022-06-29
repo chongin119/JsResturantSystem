@@ -1,6 +1,10 @@
 $(document).ready(function(){
     chooseResturantControl();
+    carFunc();
+    carClickControl();
 });
+
+
 
 function chooseResturantControl(){
     let _restA = $('#resturantLst').children().children();
@@ -43,13 +47,15 @@ function chooseResturantControl(){
                                 <h5 class="text-primary me-auto mb-0">${i.rName}</h5>
                                 <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
                                 <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
-                                <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
+                                <button type="button" class="btn btn-warning mb-0 me-3 car" >加入购物车</button>
                             </div>
                         </li>                  
                     `;
                 }
                 $('#foodLst').append(content);
 
+                clearCarEvent();
+                addCarEvent();
                 clearShowPicEvent();
                 addShowPicEvent();
 
@@ -80,6 +86,68 @@ function chooseResturantControl(){
     });
 }
 
+function addCarEvent(){
+    let _btns = $('#foodLst').children().children().children('button.car');
+
+    _btns.each(function (){
+        let _this = $(this);
+        let _thisId = _this.parent().parent().attr('id');
+        //console.log(_thisId);
+        _thisId = _thisId.substr(1,this.length);
+
+        _this.on('click',function (){
+            let json;
+            $.ajax({
+                url:"/user/getCarSession",
+                method:"post",
+                data:"",
+                async:false,
+                success:function(resp){
+                    //console.log(resp);
+                    try{
+                        json = JSON.parse(resp);
+                    }catch (e){
+                        json = "";
+                    }
+                    //console.log("json",json);
+                    if(json === "" || json === null){
+                        json = {};
+                        json[`${_thisId}`] = 1;
+                    }else if (json.hasOwnProperty(`${_thisId}`) === false){
+                        json[`${_thisId}`] = 1;
+                    }else{
+                        json[`${_thisId}`] += 1;
+                    }
+                }
+            });
+
+            //console.log(json);
+
+            $.ajax({
+                url:"/user/setCarSession",
+                method:"post",
+                data:{"string":JSON.stringify(json)},
+                async:false,
+                success:function(resp){
+                    carFunc(JSON.parse(resp));
+                }
+            });
+        });
+    });
+}
+
+function clearCarEvent(){
+    let _btns = $('#foodLst').children().children().children('button.car');
+
+    _btns.each(function (){
+        let _this = $(this);
+        let _thisId = _this.parent().parent().attr('id');
+        //console.log(_thisId);
+        _thisId = _thisId.substr(1,_thisId.length);
+
+        _this.off();
+    });
+}
 
 function clearPageEvent(){
      let pageItem = $('#pageLst').children().children('a');
@@ -135,6 +203,8 @@ function addPageEvent(){
                     }
                     $('#foodLst').append(content);
 
+                    clearCarEvent();
+                    addCarEvent();
                     clearShowPicEvent();
                     addShowPicEvent();
 
@@ -255,6 +325,8 @@ function addCategoryEvent(){
                     }
                     $('#foodLst').append(content);
 
+                    clearCarEvent();
+                    addCarEvent();
                     clearShowPicEvent();
                     addShowPicEvent();
 

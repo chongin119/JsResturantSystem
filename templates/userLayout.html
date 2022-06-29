@@ -15,6 +15,26 @@
 <body>
     {% block Modal %}
     {% endblock %}
+
+    <div class="modal fade" id="CarModal" tabindex="-1" aria-labelledby="CarModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="CarModalLabel">你的购物车</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="ModalCarBody">
+
+          </div>
+            <div class="modal-footer">
+                <h5 id="sumPrice" class="me-auto text-primary"></h5>
+                <button id="createOrder" type="button" class="btn btn-danger">结帐</button>
+              </div>
+        </div>
+      </div>
+    </div>
+
+
     <div class="Main shadow">
         <div class="headerDisplay">
             <img style="height:5vh" src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}"/>
@@ -44,16 +64,15 @@
         {% endblock body %}
         
     </div>
-    <button type="button" class="btn btn-light position-fixed bottom-0 end-0 mb-5 me-5 rounded-pill">
+    <button id="carObjBtn" type="button" class="btn btn-light position-fixed bottom-0 end-0 mb-5 me-5 rounded-pill" data-bs-toggle="modal" data-bs-target="#CarModal">
         <img style="width: 15px;height: 15px" src="{{ url_for('static', filename = 'assets/img/shoppingCar.png') }}" />
-        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-          99+
-          <span class="visually-hidden">unread messages</span>
+        <span id="carObj" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+
         </span>
     </button>
     <script type="text/javascript" src="{{ url_for('static',filename = 'js/jquery-3.6.0.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static',filename = 'js/bootstrap.bundle.min.js') }}"></script>
-
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userFunc.js') }}"></script>
     {% block script %}
         
     {% endblock script %}
