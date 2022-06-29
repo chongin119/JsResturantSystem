@@ -48,6 +48,10 @@ body{
     color: #f8f9fa !important;
 }
 
+.mypointer{
+    cursor: pointer;
+}
+
 .myR:hover{
     background-color: #e9ecef;
 }

@@ -55,6 +55,40 @@ def getFoodCard():
     resp = {"foods":foods,"totalpage":totalpage}
     return jsonify(resp)
 
+@userBlue.route('/getFoodCardHvPage',methods=["POST"])
+def getFoodCardHvPage():
+
+    needCategoryItems = request.form.items()
+    needCategory = {}
+    resturantId = ""
+    curPage = 0
+    for item in needCategoryItems:
+        if item[0] == "resturantId":
+            resturantId = item[1]
+        elif item[0] == "curPage":
+            curPage = int(item[1])
+        else:
+            #num = item[0][item[0].find('[') + 1 : item[0].find(']')]
+            needCategory[item[0]] = item[1]
+
+
+
+    needCategory = [key for key in needCategory if needCategory[key] != 'false']
+
+    db = myDB(current_app.config["DBPATH"])
+    foods = db.getFoodCard(needCategory,resturantId)
+    del db
+
+
+    totalpage = len(foods) // 10 + 1
+    if len(foods) > 10:
+        foods = foods[(curPage - 1) * 10 : 10 + (curPage - 1) * 10]
+
+    resp = {"foods":foods,"totalpage":totalpage}
+    return jsonify(resp)
+
+
+
 @userBlue.route('/getFoodPic',methods=["POST"])
 def getFoodPic():
     id = request.form.get('id')
