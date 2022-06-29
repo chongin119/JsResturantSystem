@@ -2,6 +2,7 @@ import sqlite3 as s3
 from ENDE import myAES
 import os.path
 import random
+from datetime import datetime
 
 class myDB():
     def __init__(self,path):
@@ -119,8 +120,13 @@ class myDB():
                                     WHERE f.id == ?""",(id,)).fetchone()
         result = list(result)
         result.append(count)
+        result.append(id)
         return result
 
+    #获取userId by username
+    def getUserIdByUsername(self,username):
+        id = self.c.execute("""SELECT id FROM userInfo WHERE username == ?""",(username,)).fetchone()[0]
+        return id
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()
@@ -132,6 +138,20 @@ class myDB():
         self.c.execute("""INSERT INTO userInfo (id,username,password,profilePhoto,email,phoneNum,permission) VALUES (?,?,?,?,?,?,?)""",(id,username,password,None,None,None,2))
 
         self.db.commit()
+
+    def createOrder(self,foodIds,sumOfPrice,username,comment):
+        id = self.c.execute("""SELECT id FROM orderTable ORDER BY id DESC""").fetchone()
+        if id == None:
+            id = 0
+        else:
+            id = int(id[0]) + 1
+
+        userId = self.getUserIdByUsername(username)
+        t =  datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        self.c.execute("""INSERT INTO orderTable (id, orderFoodId, fromUser, time, comment, sumOfPrice, status) VALUES (?,?,?,?,?,?,?)
+                        """,(id, foodIds, userId, t, comment, sumOfPrice, 0))
+        self.db.commit()
+
 
     #check the menu
     def checkmenu(self):

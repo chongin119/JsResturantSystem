@@ -17,18 +17,25 @@
     {% endblock %}
 
     <div class="modal fade" id="CarModal" tabindex="-1" aria-labelledby="CarModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollabl">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="CarModalLabel">你的购物车</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button id="carModalClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" id="ModalCarBody">
 
           </div>
             <div class="modal-footer">
-                <h5 id="sumPrice" class="me-auto text-primary"></h5>
-                <button id="createOrder" type="button" class="btn btn-danger">结帐</button>
+                <div class="d-flex flex-column w-100">
+                    <textarea placeholder="输入留言" id="comment" class="form-control mb-3" aria-label="With textarea"></textarea>
+                    <div class="d-flex flex-row">
+                        <h5 id="sumPrice" class="me-auto text-primary"></h5>
+                        <button id="createOrder" type="button" class="btn btn-danger">结帐</button>
+                    </div>
+
+                </div>
+
               </div>
         </div>
       </div>

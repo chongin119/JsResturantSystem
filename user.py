@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, render_template, session, url_for
 from flask import Blueprint, current_app, jsonify
 from sqlalchemy import true
+import json
 
 from dbfunc import myDB
 
@@ -122,14 +123,48 @@ def getCarLst():
     for i in carDict:
         info = db.getCarLst(i,carDict[i])
         if result.get(info[2]) != None:
-            result[info[2]].append({"name":info[0],"price":info[1],"count":info[3]})
+            result[info[2]].append({"name":info[0],"price":info[1],"count":info[3],"foodId": info[4]})
         else:
-            result[info[2]] = [{"name":info[0],"price":info[1],"count":info[3]}]
+            result[info[2]] = [{"name":info[0],"price":info[1],"count":info[3],"foodId": info[4]}]
 
-    print(result)
+    #print(result)
     del db
     return jsonify(result)
 
 @userBlue.route('/createOrder',methods = ["POST"])
 def createOrder():
-    return
+    info = request.json
+    print(info)
+    comment = info[1]
+    info = info[0]
+    print(info,comment)
+    username = session["username"]
+    db = myDB(current_app.config["DBPATH"])
+    infoDict = {}
+    for i in info:
+        foodstr = ""
+        sumOfPrice = 0.0
+
+        for j in info[i]:
+            foodstr += j['foodId'] + '_' + j['count'] + ';'
+            sumOfPrice += int(j['count']) * j['price']
+        db.createOrder(foodstr,sumOfPrice,username,comment)
+    del db
+    del session["myCar"]
+    return jsonify("Aaa")
+
+@userBlue.route('/changeSession',methods = ["POST"])
+def changeSession():
+    string = session["myCar"]
+    id = request.form.get('id')
+    jsonDict = json.loads(string)
+
+
+    temp = jsonDict[id] - 1
+    if temp == 0:
+        del jsonDict[id]
+    else:
+        jsonDict[id] = temp
+
+    session["myCar"] = json.dumps(jsonDict)
+    return jsonify('aaa')
