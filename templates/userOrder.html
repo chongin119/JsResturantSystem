@@ -63,7 +63,7 @@
             <div class="flex-grow-1 bg-light p-3">
                 <div class="d-flex flex-column">
                     <h3 class="w-100">菜品类别</h3>
-                    <div class="d-flex flex-row flex-wrap w-100">
+                    <div class="d-flex flex-row flex-wrap w-100" id="Categorys" >
                         {% for category in categorys %}
                             <div class="me-3 mt-3">
                                 <input type="checkbox" class="btn-check" id="C{{ categorys[category].id }}" autocomplete="off">
@@ -71,9 +71,26 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div id="foodCards">
-
+                    <div class="d-flex flex-wrap flex-column border-top mt-3 pt-3 ">
+                        <ul class="list-group list-group-flush shadow" id="foodLst" >
+                        </ul>
                     </div>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center mt-3" >
+                        <li class="page-item">
+                          <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                          </a>
+                        </li>
+                          <div id="pageLst">
+
+                          </div>
+                          <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
                 </div>
             </div>
         </div>

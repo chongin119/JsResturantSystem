@@ -80,6 +80,28 @@ class myDB():
                                 "name" : i[1]}
         return categorys
 
+    #获取所有食物(通过食堂和类别)
+    def getFoodCard(self,category, resturantId):
+        if len(category) == 0:#没有选等于全选
+            categorys = self.c.execute("""SELECT id FROM category""").fetchall()
+            for i in categorys:
+                category.append(i[0])
+
+        foods = []
+        #print(category)
+        if resturantId == '0':
+            for i in category:
+                tempFood = self.c.execute("""SELECT id,name,price FROM food WHERE category == ? ORDER By id""",(i,)).fetchall()
+                for j in tempFood:
+                    foods.append({'id':j[0],'name':j[1],'price':j[2]})
+        else:
+            for i in category:
+                tempFood = self.c.execute("""SELECT id,name,price FROM food WHERE category == ? and sellFrom == ? ORDER By id""",(i,resturantId)).fetchall()
+                for j in tempFood:
+                    foods.append({'id':j[0],'name':j[1],'price':j[2]})
+
+        return foods
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()
