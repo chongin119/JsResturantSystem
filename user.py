@@ -129,3 +129,7 @@ def getCarLst():
     print(result)
     del db
     return jsonify(result)
+
+@userBlue.route('/createOrder',methods = ["POST"])
+def createOrder():
+    return

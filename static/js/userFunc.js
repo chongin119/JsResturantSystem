@@ -40,6 +40,17 @@ function carClickControl(){
                 }
                 _Modal.append(content);
                 $('#sumPrice').html(`总价：${sum}`);
+
+                $('#createOrder').on('click',function(){
+                    $.ajax({
+                        url:"/user/createOrder",
+                        method:"post",
+                        data:"",
+                        success:function(){
+
+                        }
+                    })
+                });
             }
         });
     });
