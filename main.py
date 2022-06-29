@@ -15,9 +15,13 @@ web.config.from_pyfile('./config.py')
 
 #remember to add before request
 
+# @web.route('/')
+# def nothing():
+#     return redirect('/auth/')
+
 @web.route('/')
-def nothing():
-    return redirect('/auth/')
+def url():
+    return redirect('/admin/')
 
 if __name__ == '__main__':
     web.run(port = 8000, debug = True)
