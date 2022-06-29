@@ -69,14 +69,14 @@
                 <ul class="nav nav-pills d-flex flex-column" id="resturantLst">
                 {% for resturant in resturants %}
                     <li class="nav-item">
-                        <a class="nav-link text-secondary"
+                        <a class="nav-link text-secondary myR"
                            style="cursor:pointer;" id="R{{ resturants[resturant].id }}">{{ resturants[resturant].name }}</a>
                     </li>    
                 {% endfor %}
                 </ul>
             </div>
             
-            <div class="flex-grow-1 bg-light p-3">
+            <div class="flex-grow-1 p-3">
                 <div class="d-flex flex-column">
                     <h3 class="w-100">菜品类别</h3>
                     <div class="d-flex flex-row flex-wrap w-100" id="Categorys" >
@@ -98,7 +98,7 @@
                             <span aria-hidden="true">&laquo;</span>
                           </a>
                         </li>
-                          <div id="pageLst">
+                          <div id="pageLst" class="d-flex flex-row">
 
                           </div>
                           <a class="page-link" href="#" aria-label="Next">

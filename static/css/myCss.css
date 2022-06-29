@@ -47,3 +47,7 @@ body{
     background-color: #dc3545 !important;
     color: #f8f9fa !important;
 }
+
+.myR:hover{
+    background-color: #e9ecef;
+}

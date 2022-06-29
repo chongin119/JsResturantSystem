@@ -1,14 +1,13 @@
 import sqlite3 as s3
-from regex import R
-
-from sqlalchemy import null
 from ENDE import myAES
-
+import os.path
 import random
 
 class myDB():
     def __init__(self,path):
-        self.db = s3.connect(path)
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        db_path = os.path.join(BASE_DIR, path)
+        self.db = s3.connect(db_path)
         self.c = self.db.cursor()
         
     def __del__(self):

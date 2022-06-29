@@ -47,11 +47,10 @@ def getFoodCard():
     foods = db.getFoodCard(needCategory,resturantId)
     del db
 
-    print(foods)
+
+    totalpage = len(foods) // 10 + 1
     if len(foods) > 10:
         foods = foods[0:10]
-    totalpage = len(foods) // 10
-    if totalpage == 0: totalpage = 1
 
     resp = {"foods":foods,"totalpage":totalpage}
     return jsonify(resp)

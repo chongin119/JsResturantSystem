@@ -174,11 +174,11 @@ function addCategoryEvent(){
                     for(let i = 1 ;i<=resp.totalpage;i++){
                         if(i === 1){
                             content += `
-                                <li class="page-item"><a class="page-link myactive">${i}</a></li>
+                                <li class="page-item"><a class="page-link myactive" style="cursor:pointer;">${i}</a></li>
                             `;
                         }else{
                             content += `
-                                <li class="page-item"><a class="page-link">${i}</a></li>
+                                <li class="page-item"><a class="page-link" style="cursor:pointer;">${i}</a></li>
                             `;
                         }
 

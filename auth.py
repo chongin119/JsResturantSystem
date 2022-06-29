@@ -16,6 +16,7 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
 
+
         db = myDB(current_app.config["DBPATH"])
         op = current_app.config["AESKEY"]
         result = db.validLogin(username, password, op)
