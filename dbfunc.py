@@ -91,14 +91,18 @@ class myDB():
         #print(category)
         if resturantId == '0':
             for i in category:
-                tempFood = self.c.execute("""SELECT id,name,price FROM food WHERE category == ? ORDER By id""",(i,)).fetchall()
+                tempFood = self.c.execute("""SELECT f.id,f.name,f.price,r.name FROM food AS f LEFT JOIN resturant AS r
+                                            ON f.sellFrom == r.id
+                                            WHERE f.category == ? ORDER By f.id""",(i,)).fetchall()
                 for j in tempFood:
-                    foods.append({'id':j[0],'name':j[1],'price':j[2]})
+                    foods.append({'id':j[0],'name':j[1],'price':j[2],'rName':j[3]})
         else:
             for i in category:
-                tempFood = self.c.execute("""SELECT id,name,price FROM food WHERE category == ? and sellFrom == ? ORDER By id""",(i,resturantId)).fetchall()
+                tempFood = self.c.execute("""SELECT f.id,f.name,f.price,r.name FROM food AS F LEFT JOIN resturant AS r 
+                                            ON f.sellFrom == r.id
+                                            WHERE f.category == ? and f.sellFrom == ? ORDER By f.id""",(i,resturantId)).fetchall()
                 for j in tempFood:
-                    foods.append({'id':j[0],'name':j[1],'price':j[2]})
+                    foods.append({'id':j[0],'name':j[1],'price':j[2],'rName':j[3]})
 
         return foods
 

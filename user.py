@@ -46,6 +46,8 @@ def getFoodCard():
     db = myDB(current_app.config["DBPATH"])
     foods = db.getFoodCard(needCategory,resturantId)
     del db
+
+    print(foods)
     if len(foods) > 10:
         foods = foods[0:10]
     totalpage = len(foods) // 10

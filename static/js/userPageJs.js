@@ -39,7 +39,8 @@ function chooseResturantControl(){
                     content += `
                         <li class="list-group-item" id=F${i.id}>
                             <div class="d-flex flex-row align-items-center mb-0">
-                                <h5 class="me-auto mb-0">${i.name}</h5>
+                                <h5 class="me-3 mb-0">${i.name}</h5>
+                                <h5 class="text-primary me-auto mb-0">${i.rName}</h5>
                                 <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
                                 <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
                                 <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
@@ -155,7 +156,8 @@ function addCategoryEvent(){
                         content += `
                             <li class="list-group-item" id=F${i.id}>
                                 <div class="d-flex flex-row align-items-center mb-0">
-                                    <h5 class="me-auto mb-0">${i.name}</h5>
+                                    <h5 class="me-3 mb-0">${i.name}</h5>
+                                    <h5 class="text-primary me-auto mb-0">${i.rName}</h5>
                                     <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
                                     <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
                                     <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
