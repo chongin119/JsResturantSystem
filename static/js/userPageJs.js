@@ -33,7 +33,7 @@ function chooseResturantControl(){
             success:function(resp){
                 $('#foodLst').empty();
 
-                console.log(resp);
+
                 let content = "";
                 for(let i of resp.foods){
                     content += `
@@ -41,14 +41,15 @@ function chooseResturantControl(){
                             <div class="d-flex flex-row align-items-center mb-0">
                                 <h5 class="me-auto mb-0">${i.name}</h5>
                                 <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
-                                <button type="button" class="btn btn-info mb-0 me-3">视图</button>
-                                <button type="button" class="btn btn-warning mb-0 me-3">加入购物车</button>
+                                <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
+                                <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
                             </div>
                         </li>                  
                     `;
                 }
                 $('#foodLst').append(content);
 
+                clearShowPicEvent();
                 addShowPicEvent();
 
                 content = '';
@@ -75,7 +76,40 @@ function chooseResturantControl(){
 }
 
 function addShowPicEvent(){
+    let _btns = $('#foodLst').children().children().children('button.pic');
 
+    _btns.each(function (){
+        let _this = $(this);
+        let _thisId = _this.parent().parent().attr('id');
+        //console.log(_thisId);
+        _thisId = _thisId.substr(1,_thisId.length);
+
+        _this.on('click',function (){
+            $.ajax({
+                url:"/user/getFoodPic",
+                method:"post",
+                data:{"id":_thisId},
+                success:function(resp){
+                    let imageSRC = 'data:image/jpeg;base64,' + resp;
+                    $('#ModalPic>img').attr('src',imageSRC);
+                    $('#exampleModalLabel').html(_this.parent().children('h5:eq(0)').html());
+                }
+            });
+        });
+    });
+}
+
+function clearShowPicEvent(){
+    let _btns = $('#foodLst').children().children().children('button.pic');
+
+    _btns.each(function (){
+        let _this = $(this);
+        let _thisId = _this.parent().parent().attr('id');
+        //console.log(_thisId);
+        _thisId = _thisId.substr(1,_thisId.length);
+
+        _this.off();
+    });
 }
 
 function clearCategoryEvent(){
@@ -106,7 +140,7 @@ function addCategoryEvent(){
             });
 
             categoryId.resturantId = _resturantId;
-            console.log(_resturantId);
+            //console.log(_resturantId);
 
             $.ajax({
                 url:"/user/getFoodCard",
@@ -115,7 +149,7 @@ function addCategoryEvent(){
                 success:function(resp){
                     $('#foodLst').empty();
 
-                    console.log(resp);
+                    //console.log(resp);
                     let content = "";
                     for(let i of resp.foods){
                         content += `
@@ -123,14 +157,15 @@ function addCategoryEvent(){
                                 <div class="d-flex flex-row align-items-center mb-0">
                                     <h5 class="me-auto mb-0">${i.name}</h5>
                                     <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
-                                    <button type="button" class="btn btn-info mb-0 me-3">视图</button>
-                                    <button type="button" class="btn btn-warning mb-0 me-3">加入购物车</button>
+                                    <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
+                                    <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
                                 </div>
                             </li>                  
                         `;
                     }
                     $('#foodLst').append(content);
 
+                    clearShowPicEvent();
                     addShowPicEvent();
 
                     content = '';

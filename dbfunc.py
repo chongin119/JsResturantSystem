@@ -102,6 +102,12 @@ class myDB():
 
         return foods
 
+    #获取食物视图By Id
+    def getFoodPic(self,id):
+        pic = self.c.execute("""SELECT foodPic FROM food WHERE id == ?""",(id,)).fetchone()[0]
+
+        return pic
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()

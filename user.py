@@ -53,3 +53,11 @@ def getFoodCard():
 
     resp = {"foods":foods,"totalpage":totalpage}
     return jsonify(resp)
+
+@userBlue.route('/getFoodPic',methods=["POST"])
+def getFoodPic():
+    id = request.form.get('id')
+    db = myDB(current_app.config["DBPATH"])
+    pic = db.getFoodPic(id)
+    del db
+    return pic

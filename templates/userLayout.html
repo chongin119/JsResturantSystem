@@ -13,6 +13,8 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/myCss.css') }}">
 </head>
 <body>
+    {% block Modal %}
+    {% endblock %}
     <div class="Main shadow">
         <div class="headerDisplay">
             <img style="height:5vh" src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}"/>
