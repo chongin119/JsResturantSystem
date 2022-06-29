@@ -133,6 +133,31 @@ class myDB():
 
         self.db.commit()
 
+    #check the menu
+    def checkmenu(self):
+        info = self.c.execute("""SELECT id, foodPic, name, price FROM food""").fetchall()
+        sellform = self.c.execute("""SELECT resturant.name FROM food INNER JOIN resturant WHERE food.sellFrom = resturant.id""").fetchall()
+        id = []
+        foodpic = []
+        name = []
+        price = []
+        sellplace = []
+
+        length = len(info)
+        for i in range(0, length):
+            id.append(info[i][0])
+            foodpic.append(info[i][1])
+            name.append(info[i][2])
+            price.append(info[i][3])
+            sellplace.append(sellform[i][0])
+        return {'id': id, 'foodpic': foodpic, 'name': name, 'price': price, 'sellplace': sellplace}
+
+    #delete the menu
+    def deletemenu(self, id):
+        self.c.execute("""DELETE FROM food WHERE id={}""".format(id))
+
+        self.db.commit() 
+
 if __name__ == '__main__':
     db = myDB('./web.db')
     del db

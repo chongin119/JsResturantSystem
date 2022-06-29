@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="../static/css/simplebar1.css">
-        <link rel="stylesheet" href="../static/css/simplebar.css">
+        <link rel="stylesheet" href="../static/node_modules/simplebar/dist/simplebar.css">
+        <link rel="stylesheet" href="../static/css/vendors/simplebar.css">
+        <link rel="stylesheet" href="../static/css/addproduct.css">
         <!-- Main styles for this application-->
         <link href="../static/css/style.css" rel="stylesheet">
         <!-- We use those styles to show code examples, you should remove them in your application.-->
@@ -66,34 +67,62 @@
             <header class="header header-sticky mb-4">
             </header>
             <!-- 图表部分 -->
-            <div class="body flex-grow-1 px-3">
-            </div>
-        </div>
-            <!-- 右边头顶部件 -->
-            <header class="header header-sticky mb-4">
-            </header>
-            <!-- 图表部分 -->
-            <div class="body flex-grow-1 px-3">
-                <table border="1">
-                    <tr>
-                      <th>Month</th>
-                      <th>Savings</th>
-                    </tr>
-                    <tr>
-                      <td>January</td>
-                      <td>$100</td>
-                    </tr>
-                  </table>
+            <div class="body flex-grow-1 px-3" onsubmit="return submitInfo()">
+                <legend>菜品信息管理</legend>
+                <div class="control-group">
+                    <label class="control-label">菜品名称：</label>
+                    <input id="input_id" type="text" class="input_text" placeholder="" onblur="return CheckName()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">菜品金额（单点）：</label>
+                    <input id="input_id" type="text" class="input_text" placeholder="" onblur="return CheckPrice()">
+                </div>
+                <div class="control-group">
+                    <label class="control-label">类别：</label>
+                    <label class="catergory">
+                        <input type="radio" name = 'radio_catergory' value="1" checked="checked">
+                        饭
+                    </label>
+                    <label class="catergory">
+                        <input type="radio" name = 'radio_catergory' value="2">
+                        面
+                    </label>
+                    <label class="catergory">
+                        <input type="radio" name = 'radio_catergory' value="3">
+                        饮料
+                    </label>
+                    <label class="catergory">
+                        <input type="radio" name = 'radio_catergory' value="4">
+                        其他
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">饭堂：</label>
+                    <select id="select_canteen">
+                        <option>勺园</option>
+                        <option>中关园</option>
+                        <option>农园</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">上传菜品照片</label>
+                    <input type="file" name="file" accept=".png, .jpg, .jpeg"/ onblur="return Upload()">
+                </div>  
+                <div class="submit_btn" style="display: block;">
+                    <button class="btn" type="submit">提交</button>
+                </div>
             </div>
         </div>
         <!-- CoreUI and necessary plugins-->
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-3.6.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/simplebar/dist/simplebar.min.js') }}"></script>
         <!-- Plugins and scripts required by this view-->
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/chart.js/dist/chart.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'js/admin.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/addmenu.js') }}"></script>
     </body>
 </html>
 
