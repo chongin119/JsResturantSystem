@@ -1,4 +1,5 @@
 import sqlite3 as s3
+from regex import R
 
 from sqlalchemy import null
 from ENDE import myAES
@@ -47,10 +48,37 @@ class myDB():
             randomLst = ids
         pics = {}
         for cnt, i in enumerate(randomLst):
-            picBlob = self.c.execute("""SELECT foodPic FROM food WHERE id == ?""",(i,)).fetchone()[0]
+            picBlob = self.c.execute("""SELECT 
+                                        f.foodPic,f.name,r.name 
+                                        FROM 
+                                        food AS f LEFT JOIN resturant AS r 
+                                        ON f.sellFrom == r.id 
+                                        WHERE f.id == ?""",(i,)).fetchone()
             pics[cnt] = picBlob
 
         return pics 
+
+    #获取所有餐厅
+    def getResturant(self):
+        Resturants = self.c.execute("""SELECT id,name FROM resturant""").fetchall()
+        resturants = {}
+        resturants[0] = {"id": "0",
+                         "name": "全部"}
+        for cnt, i in enumerate(Resturants):
+            resturants[cnt+1] = {"id":i[0],
+                                "name":i[1]}
+
+        return resturants
+
+    #获取所有食品类别
+    def getCategorys(self):
+        Categorys = self.c.execute("""SELECT id,name FROM category""").fetchall()
+        categorys = {}
+
+        for cnt, i in enumerate(Categorys):
+            categorys[cnt+1] = {"id" : i[0],
+                                "name" : i[1]}
+        return categorys
 
     #insert del update
     def insertUser(self,username,password):

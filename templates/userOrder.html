@@ -6,36 +6,81 @@
 
 {% block  body %}
 <div class="MainContainer">
-    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div id="carouselExampleCaptions" class="carousel carousel-dark slide w-50 mb-3" data-bs-ride="carousel">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            {% for pic in pics %}
+            <button type="button" 
+                    data-bs-target="#carouselExampleCaptions" 
+                    data-bs-slide-to="{{pic}}" 
+                    {% if pic == 0 %}
+                        class="active" 
+                        aria-current="true"     
+                    {% endif %}
+                    aria-label="Slide {{ pic }}"></button> 
+            {% endfor %}
         </div>
         
-        <div class="carousel-inner">
+        <div class="carousel-inner ">
             {% for pic in pics %}
-                <div class="carousel-item 
+                <div class="carousel-item
                             {% if pic == 0 %}
                                 active
-                            {% endif %}">
+                            {% endif %}" style="height:50vh;">
 
-                    <img src="data:image/jpeg;base64,{{ pics[pic] }}" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
+                    <img src="data:image/jpeg;base64,{{ pics[pic][0] }}" class="d-block w-100"alt="...">
+                    <div class="carousel-caption d-none d-md-block ">
+                        <div class="rounded-pill shadow bg-light p-3">
+                            <h3>{{ pics[pic][1] }}</h3>
+                            <h5>售于：{{ pics[pic][2] }}</h5>
+                        </div>
                     </div>
                 </div>
             {% endfor %} 
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
         </button>
+    </div>
+    <div class="orderWindow border-top w-100 pt-3">
+        <div class="d-flex">
+            <div class="me-3" style="width:15%">
+                <h3 class="w-100">食堂</h3>
+                <ul class="nav nav-pills d-flex flex-column" id="resturantLst">
+                {% for resturant in resturants %}
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary"
+                           style="cursor:pointer;" id="R{{ resturants[resturant].id }}">{{ resturants[resturant].name }}</a>
+                    </li>    
+                {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="flex-grow-1 bg-light p-3">
+                <div class="d-flex flex-column">
+                    <h3 class="w-100">菜品类别</h3>
+                    <div class="d-flex flex-row flex-wrap w-100">
+                        {% for category in categorys %}
+                            <div class="me-3 mt-3">
+                                <input type="checkbox" class="btn-check" id="C{{ categorys[category].id }}" autocomplete="off">
+                                <label class="btn btn-outline-danger" for="C{{ categorys[category].id }}">{{ categorys[category].name }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div id="foodCards">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock  body %}
+
+{% block script%}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userPageJs.js') }}"></script>
+{% endblock script %}
