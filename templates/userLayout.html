@@ -13,27 +13,30 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/myCss.css') }}">
 </head>
 <body>
-    <div class="Main">
+    <div class="Main shadow">
+        <div class="headerDisplay">
+            <img style="height:5vh" src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}"/>
+        </div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-danger fw-bold">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand">未名餐饮平台</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">Features</a>
-                    <a class="nav-link" href="#">Pricing</a>
-                    <a class="nav-link disabled">Disabled</a>
+                    {% for i in navComponent %}
+                        <a class="nav-link {% if navComponent[i][1] == True %}
+                                            active" aria-current="page" 
+                                            {% else %}
+                                            " 
+                                            {% endif %} 
+                        href="#">{{ navComponent[i][0] }}</a>   
+                    {% endfor %}
                 </div>
                 </div>
             </div>
-        </nav>
-        <div>
-            <h1>111</h1>
-            <h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1><h1>111</h1>
-        </div> 
+        </nav> 
         {% block body %}
         
         {% endblock body %}

@@ -13,16 +13,25 @@ body{
     height: 100%;
 }
 
+.headerDisplay{
+    background-color: white;
+    height: 5vh;
+
+    text-align: center;
+}
 
 .Main{
     position: absolute;
     display: flex;
     flex-direction: column;
 
-    width: 50vw;
-
-    margin-top: 5vh;
+    width: 70vw;
 
     left: 50%;
     transform: translateX(-50%);
+}
+
+.MainContainer{
+    background-color: white;
+    padding: 20px;
 }

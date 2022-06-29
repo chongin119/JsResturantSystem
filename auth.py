@@ -29,7 +29,7 @@ def login():
             elif permission == 1:
                 return redirect(url_for('chefBlue.index'))
             else:
-                return redirect(url_for('userBlue.index'))
+                return redirect(url_for('userBlue.userOrder'))
         else:
             flash("登录错误")
             return redirect(url_for('authBlue.login'))

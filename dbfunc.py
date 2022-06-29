@@ -3,6 +3,8 @@ import sqlite3 as s3
 from sqlalchemy import null
 from ENDE import myAES
 
+import random
+
 class myDB():
     def __init__(self,path):
         self.db = s3.connect(path)
@@ -29,6 +31,26 @@ class myDB():
         if validPassword != password:
             return False
         return {"username":info[0],"permission":info[2]}
+
+    #随机展示三张图片
+    def randomChoosePic(self):
+        idss = self.c.execute("""SELECT id FROM food""").fetchall()
+        ids = []
+        for i in idss:
+            ids.append(i[0])
+
+        idLen = len(ids)
+        
+        if idLen > 3:
+            randomLst = random.sample(ids,3)
+        else:
+            randomLst = ids
+        pics = {}
+        for cnt, i in enumerate(randomLst):
+            picBlob = self.c.execute("""SELECT foodPic FROM food WHERE id == ?""",(i,)).fetchone()[0]
+            pics[cnt] = picBlob
+
+        return pics 
 
     #insert del update
     def insertUser(self,username,password):
