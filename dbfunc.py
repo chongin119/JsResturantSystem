@@ -133,7 +133,7 @@ class myDB():
     def getFoodNameById(self,id):
         name = self.c.execute("""SELECT name FROM food WHERE id == ?""",(id,)).fetchone()
         if name == None:
-            return "商品已被删除"
+            return "已被删除"
         return name[0]
 
     #获取餐厅名字byFoodId
@@ -144,7 +144,18 @@ class myDB():
                                 WHERE f.id == ?""",(foodId,)).fetchone()
 
         if name == None:
-            return "商品已被删除"
+            return "已被删除"
+        return name[0]
+
+    # 获取餐厅IdbyFoodId
+    def getResturantIdByFoodId(self, foodId):
+        name = self.c.execute("""SELECT r.id
+                                FROM food AS f LEFT JOIN resturant AS r 
+                                ON f.sellFrom == r.id
+                                WHERE f.id == ?""", (foodId,)).fetchone()
+
+        if name == None:
+            return "已被删除"
         return name[0]
 
     #获取某用户所有订单
@@ -162,7 +173,14 @@ class myDB():
             tempDict = {"id":i[0],"time":i[2],"comment":i[3],"sumOfPrice":i[4],"status":i[5]}
             content = ""
             food = i[1].split(';')
-            resturant = ""
+            resturant = self.c.execute("""SELECT r.name FROM orderTable AS o
+                                            LEFT JOIN resturant AS r 
+                                            ON o.sellFrom == r.id WHERE sellFrom == ? """,(i[0],)).fetchone()
+            if resturant  == None:
+                resturant = ""
+            else:
+                resturant = resturant[0]
+
             for cnt, j in enumerate(food):
                 if cnt == len(food) - 1:
                     break
@@ -171,7 +189,7 @@ class myDB():
                 name = self.getFoodNameById(temp[0])
                 content += f"{name} x{temp[1]}<br>"
 
-                if resturant == "" or resturant == "商品已被删除":
+                if resturant == "" or resturant == "已被删除":
                     resturant = self.getResturantNameByFoodId(temp[0])
 
             tempDict["orderFood"] = content
@@ -180,6 +198,42 @@ class myDB():
 
         result = result[offset:offset+10]
         return {"total":total,"rows":result}
+
+    # 获取某负责人未完成订单
+    def getHistoryOrderChef(self, username, offset):
+        userId = self.getUserIdByUsername(username)
+        info = self.c.execute(
+            """SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE fromUser == ?""",
+            (userId,)).fetchall()
+
+        if info == []:
+            return {"total": 0}
+
+        result = []
+        total = len(info)
+        # print(info)
+        for i in info:
+            tempDict = {"id": i[0], "time": i[2], "comment": i[3], "sumOfPrice": i[4], "status": i[5]}
+            content = ""
+            food = i[1].split(';')
+            resturant = ""
+            for cnt, j in enumerate(food):
+                if cnt == len(food) - 1:
+                    break
+                temp = j.split('_')
+                # print(temp[0])
+                name = self.getFoodNameById(temp[0])
+                content += f"{name} x{temp[1]}<br>"
+
+                if resturant == "" or resturant == "已被删除":
+                    resturant = self.getResturantNameByFoodId(temp[0])
+
+            tempDict["orderFood"] = content
+            tempDict["resturant"] = resturant
+            result.append(tempDict)
+
+        result = result[offset:offset + 10]
+        return {"total": total, "rows": result}
 
     #获取用户资讯
     def getProfile(self,username):
@@ -210,7 +264,7 @@ class myDB():
 
         self.db.commit()
 
-    def createOrder(self,foodIds,sumOfPrice,username,comment):
+    def createOrder(self,foodIds,sumOfPrice,username,comment,resturantId):
         id = self.c.execute("""SELECT id FROM orderTable ORDER BY id DESC""").fetchone()
         if id == None:
             id = 0
@@ -219,8 +273,9 @@ class myDB():
 
         userId = self.getUserIdByUsername(username)
         t =  datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        self.c.execute("""INSERT INTO orderTable (id, orderFoodId, fromUser, time, comment, sumOfPrice, status) VALUES (?,?,?,?,?,?,?)
-                        """,(id, foodIds, userId, t, comment, sumOfPrice, 0))
+
+        self.c.execute("""INSERT INTO orderTable (id, orderFoodId, fromUser, time, comment, sumOfPrice, status, sellFrom) VALUES (?,?,?,?,?,?,?,?)
+                        """,(id, foodIds, userId, t, comment, sumOfPrice, 0, resturantId))
         self.db.commit()
 
     #更改用戶資訊
