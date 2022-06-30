@@ -10,7 +10,7 @@ userBlue = Blueprint('userBlue',__name__,url_prefix='/user')
 @userBlue.route('/userOrder',methods=["GET"])
 def userOrder():
     username = session["username"]
-    navComponent = {"1":["用户订餐",True,"/user/userOrder"],"2":["查询过去订单",False],"3":["更改个人资料",False]}
+    navComponent = {"1":["用户订餐",True,"/user/userOrder"],"2":["查询过去订单",False,"/user/userHistory"],"3":["更改个人资料",False]}
 
     db = myDB(current_app.config["DBPATH"])
     pics = db.randomChoosePic()
@@ -25,6 +25,19 @@ def userOrder():
                             picslen = len(pics),
                             resturants = resturants,
                             categorys = categorys)
+
+@userBlue.route('/userHistory',methods=["GET"])
+def userHistory():
+    username = session["username"]
+    navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",True,"/user/userHistory"],"3":["更改个人资料",False]}
+
+    db = myDB(current_app.config["DBPATH"])
+
+    del db
+
+    return render_template('userHistory.html',
+                            username = username,
+                            navComponent = navComponent,)
 
 #webAPI below
 @userBlue.route('/getFoodCard',methods=["POST"])

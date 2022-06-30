@@ -1,0 +1,16 @@
+{% extends 'userLayout.html' %}
+
+{% block title %}
+    欢迎用户{{ username }}
+{% endblock title %}
+
+
+{% block body %}
+    <div class="MainContainer">
+
+    </div>
+{% endblock body %}
+
+{% block script%}
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userHistoryJs.js') }}"></script>
+{% endblock script %}

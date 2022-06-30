@@ -91,6 +91,7 @@
                         <ul class="list-group list-group-flush shadow" id="foodLst" >
                         </ul>
                     </div>
+                    <table id="foodTable"></table>
                     <nav aria-label="Page navigation example">
                       <ul class="pagination justify-content-center mt-3" id="PageItem" >
                         <li class="page-item disabled">
@@ -116,5 +117,5 @@
 {% endblock  body %}
 
 {% block script%}
-    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userPageJs.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userOrderJs.js') }}"></script>
 {% endblock script %}
