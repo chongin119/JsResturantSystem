@@ -86,14 +86,15 @@ def ordermanage():
     for i in range(0, len(num)):
         detail1 = []
         for j in range(0, len(num[i])):
-            info = db.listdetail(num[i][j], int(name[i][j]))
-            detail1.append(info)
+            info2 = db.listdetail(num[i][j], int(name[i][j]))
+            detail1.append(info2)
         detail.append(detail1)
     
     describe = []
     for i in range(0, len(detail)):
         describe.append(','.join(detail[i]))
     print(describe)
+
 
     for i in range(0, length):
         data.append([info['id'][i], info['date'][i], info['name'][i], describe[i], info['sum'][i], info['comment'][i], info['status'][i]])

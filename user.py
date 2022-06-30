@@ -104,9 +104,7 @@ def getFoodCardHvPages():
     db = myDB(current_app.config["DBPATH"])
     foods = db.getFoodCard(needCategory,resturantId,sortOrder)
     del db
-    for i in foods:
-        print(i)
-    print('aaa')
+
     totalpage = len(foods)
     resp = {"total":totalpage,"rows":foods[offset:offset+10]}
 

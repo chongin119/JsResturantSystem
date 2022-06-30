@@ -209,7 +209,7 @@ class myDB():
     def getHistoryOrderChef(self, username, offset):
         userId = self.getUserIdByUsername(username)
         ownRest = self.c.execute("""SELECT r.id FROM resturant AS r LEFT JOIN userInfo as u ON r.operator == u.id WHERE u.id == ?""",(userId,)).fetchone()[0]
-        print(ownRest)
+        #print(ownRest)
         info = self.c.execute(
             """SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE sellFrom == ? and status == ?""",
             (ownRest,0)).fetchall()

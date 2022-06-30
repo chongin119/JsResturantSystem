@@ -55,3 +55,24 @@ body{
 .myR:hover{
     background-color: #e9ecef;
 }
+
+::-webkit-scrollbar{
+    width: 0.5vmin;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background: #A8A8A8;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb{
+    border-radius: 3vmin;
+    background: #D8D8D8;
+}
+
+::-webkit-scrollbar-track{
+    background: transparent;
+}
+::-webkit-scrollbar-track-piece{
+    background: transparent;
+}
