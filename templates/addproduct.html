@@ -23,11 +23,11 @@
                 <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
                     汇总信息</a></li>
-                <li class="nav-group"><a class="nav-link nav-group-toggle" href="adminManage.html">
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
                     用户管理</a>
                 <ul class="nav-group-items">
-                    <li class="nav-item"><a class="nav-link" href="{{ 'usermanage' }}"><span class="nav-icon"></span> Accordion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ 'userlayout' }}"><span class="nav-icon"></span> Accordion</a></li>
                     <li class="nav-item"><a class="nav-link" href="base/breadcrumb.html"><span class="nav-icon"></span> Breadcrumb</a></li>
                     <li class="nav-item"><a class="nav-link" href="base/cards.html"><span class="nav-icon"></span> Cards</a></li>
                     <li class="nav-item"><a class="nav-link" href="base/carousel.html"><span class="nav-icon"></span> Carousel</a></li>
@@ -44,18 +44,17 @@
                     <li class="nav-item"><a class="nav-link" href="base/tooltips.html"><span class="nav-icon"></span> Tooltips</a></li>
                 </ul>
                 </li>
-                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                <li class="nav-group"><a class="nav-link" href="{{ 'foodmanage' }}">
+                    <img src="{{ url_for('static', filename = 'assets/brand/menu.svg') }}" class="nav-icon">
+                    菜单可视化</a>
+                </li>
+                <li class="nav-group"><a class="nav-link" href="#">
                     <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
                     分类管理</a>
-                <ul class="nav-group-items">
-                    <li class="nav-item"><a class="nav-link" href="buttons/buttons.html"><span class="nav-icon"></span> Buttons</a></li>
-                    <li class="nav-item"><a class="nav-link" href="buttons/button-group.html"><span class="nav-icon"></span> Buttons Group</a></li>
-                    <li class="nav-item"><a class="nav-link" href="buttons/dropdowns.html"><span class="nav-icon"></span> Dropdowns</a></li>
-                </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
-                    商品管理</a></li>
+                    菜单管理</a></li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
                     订单管理</a></li>

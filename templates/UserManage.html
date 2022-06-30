@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" href="../static/css/simplebar1.css">
-        <link rel="stylesheet" href="../static/css/simplebar.css">
-        <link rel="stylesheet" href="../static/css/foodmanage.css">
+        <link rel="stylesheet" href="../static/node_modules/simplebar/dist/simplebar.css">
+        <link rel="stylesheet" href="../static/css/vendors/simplebar.css">
+        <link rel="stylesheet" href="../static/css/addproduct.css">
         <!-- Main styles for this application-->
         <link href="../static/css/style.css" rel="stylesheet">
         <!-- We use those styles to show code examples, you should remove them in your application.-->
@@ -69,53 +69,48 @@
                 </form>
             </header>
             <!-- 图表部分 -->
-            <div class="body flex-grow-1 px-3">
-                <table class="menu">
-                    <tr>
-                        <th>菜品编号</th>
-                        <th>菜品图片</th>
-                        <th>菜品名称</th>
-                        <th>菜品金额（单点）</th>
-                        <th>餐厅位置</th>
-                        <th>操作</th>
-                    </tr>
-                    {% for i in data %}
-                    <tr id="column{{i[0]}}">
-                        <td>
-                            <span>{{ i[0] }}</span>
-                        </td>
-                        <td>
-                            <img src="data:image/jpeg;base64,{{ i[1] }}" width="300px">
-                        </td>
-                        <td>
-                            <span>{{ i[2] }}</span>
-                        </td>
-                        <td>
-                            <span>{{ i[3] }}</span>
-                        </td>
-                        <td>
-                            <span>{{ i[4] }}</span>
-                        </td>
-                        <td>
-                            <button onclick="deletemenu(this)" id = "{{i[0]}}">
-                                下架
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
+            <form method="post" action="/admin/usermanage" enctype="multipart/form-data">
+                <div class="body flex-grow-1 px-3">
+                    <legend>人员管理系统</legend>
+                    <div class="control-group">
+                        <label class="control-label">姓名：</label>
+                        <select id="select_username" name="username">
+                            {% for i in data%}
+                            <option value="1">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">修改密码：</label>
+                        <input id="input_id" type="text" class="input_text" name="password" placeholder="">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">修改邮箱：</label>
+                        <input id="input_id" type="text" class="input_text" name="email" placeholder="">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">修改电话号码：</label>
+                        <input id="input_id" type="text" class="input_text" name="phone" placeholder="">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">上传菜品照片：</label>
+                        <input type="file" name="file" accept=".png, .jpg, .jpeg">
+                    </div>  
+                    <div class="submit_btn" style="display: block;">
+                        <button class="btn" type="submit">提交</button>
+                    </div>
+                </div>
+            </form>
         </div>
         <!-- CoreUI and necessary plugins-->
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-3.6.0.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/simplebar/dist/simplebar.min.js') }}"></script>
         <!-- Plugins and scripts required by this view-->
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/chart.js/dist/chart.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'js/admin.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'js/deletemenu.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-3.6.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
     </body>
 </html>
 

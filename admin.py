@@ -1,6 +1,3 @@
-from email.mime import base
-from pydoc import describe
-from unicodedata import category
 from flask import Flask, request, redirect, render_template, session, url_for
 from flask import Blueprint, current_app, jsonify
 from dbfunc import myDB
@@ -18,8 +15,8 @@ def logout():
 def index():
     return render_template('originalAdmin.html')
 
-@adminBlue.route('/usermanage', methods=['GET', 'POST'])
-def usermanage():
+@adminBlue.route('/foodmanage', methods=['GET', 'POST'])
+def foodmanage():
     db = myDB(current_app.config['DBPATH'])
     info = db.checkmenu()
     length = len(info['foodpic'])
@@ -36,7 +33,7 @@ def deletemenu():
         print(id)
         db.deletemenu(id)
         del db
-    return redirect(url_for('adminBlue.usermanage'))
+    return redirect(url_for('adminBlue.foodmanage'))
 
 @adminBlue.route('/addproduct', methods=['GET', 'POST'])
 def addproduct():
@@ -101,5 +98,32 @@ def ordermanage():
     for i in range(0, length):
         data.append([info['id'][i], info['date'][i], info['name'][i], describe[i], info['sum'][i], info['comment'][i], info['status'][i]])
     return render_template('OrderManage.html', data = data)
+
+@adminBlue.route('/userlayout', methods=['GET', 'POST'])
+def userlayout():
+    db = myDB(current_app.config['DBPATH'])
+    data = db.getUsername()
+    del db
+    return render_template('UserManage.html', data = data)
+
+@adminBlue.route('/usermanage', methods=['GET', 'POST'])
+def usermanage():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        password = request.form.get('password')
+        encode = myAES('IloveJsLessonTeachingByZW')
+        pd = encode.encrypt(password)
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        photo = request.files.get('file')
+        encoded = base64.b64encode(photo.read())
+        userpic = str(encoded, 'utf-8')
+        db = myDB(current_app.config['DBPATH'])
+        db.changeInfo(name, pd, email, phone, userpic)
+        del db
+        return redirect(url_for('adminBlue.userlayout'))
+
+    return render_template('UserManage.html')
+
 
 

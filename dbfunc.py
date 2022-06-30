@@ -377,6 +377,22 @@ class myDB():
             detail = "该菜品已经售光了"
         detail = choose + '*' + num
         return detail
+    
+    #get the username
+    def getUserName(self):
+        name = self.c.execute("""SELECT username FROM userInfo""").fetchall()
+        nameList = []
+        for i in range(0, len(name)):
+            nameList.append(name[i][0])
+        return nameList
+
+
+    #update the userinfo
+    def changeInfo(self, name, pd, email, phone, userpic):
+        self.c.execute("""UPDATE userInfo SET password=?, email=?, phoneNum=?, profilePhoto=? WHERE username=?""",(pd, email, phone, userpic, name))
+        self.db.commit()
+
+
 
 if __name__ == '__main__':
     db = myDB('./web.db')
