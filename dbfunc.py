@@ -174,9 +174,19 @@ class myDB():
 
     #delete the menu
     def deletemenu(self, id):
-        self.c.execute("""DELETE FROM food WHERE id={}""".format(id))
+        self.c.execute("""DELETE FROM food WHERE id=?""",id)
 
-        self.db.commit() 
+        self.db.commit()
+     
+    #add the product into the menu
+    def addmenu(self, name, price, foodpic, canteen, category):
+        id = self.c.execute("""SELECT id FROM food ORDER BY id DESC""").fetchone()
+        if id == None:
+            id = 0
+        else:
+            id = int(id[0]) + 1
+        self.c.execute("""INSERT INTO food(id, name, price, foodPic, sellFrom, category) VALUES (?,?,?,?,?,?)""", (id, name, price, foodpic, canteen, category))
+        self.db.commit()
 
 if __name__ == '__main__':
     db = myDB('./web.db')

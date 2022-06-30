@@ -67,51 +67,53 @@
             <header class="header header-sticky mb-4">
             </header>
             <!-- 图表部分 -->
-            <div class="body flex-grow-1 px-3" onsubmit="return submitInfo()">
-                <legend>菜品信息管理</legend>
-                <div class="control-group">
-                    <label class="control-label">菜品名称：</label>
-                    <input id="input_id" type="text" class="input_text" placeholder="" onblur="return CheckName()">
+            <form method="post" action="/admin/addmenu" enctype="multipart/form-data">
+                <div class="body flex-grow-1 px-3" onsubmit="return submitInfo()">
+                    <legend>菜品信息管理</legend>
+                    <div class="control-group">
+                        <label class="control-label">菜品名称：</label>
+                        <input id="input_id" type="text" class="input_text" name="name" placeholder="" onblur="return CheckName()">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">菜品金额（单点）：</label>
+                        <input id="input_id" type="text" class="input_text" name="price" placeholder="" onblur="return CheckPrice()">
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">类别：</label>
+                        <label class="catergory">
+                            <input type="radio" name = 'radio_catergory' value="1" checked="checked">
+                            饭
+                        </label>
+                        <label class="catergory">
+                            <input type="radio" name = 'radio_catergory' value="2">
+                            面
+                        </label>
+                        <label class="catergory">
+                            <input type="radio" name = 'radio_catergory' value="3">
+                            饮料
+                        </label>
+                        <label class="catergory">
+                            <input type="radio" name = 'radio_catergory' value="4">
+                            其他
+                        </label>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">饭堂：</label>
+                        <select id="select_canteen" name="canteen">
+                            <option value="1">勺园</option>
+                            <option value="2">中关园</option>
+                            <option value="3">农园</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">上传菜品照片</label>
+                        <input type="file" name="file" accept=".png, .jpg, .jpeg"/ onblur="return Upload()">
+                    </div>  
+                    <div class="submit_btn" style="display: block;">
+                        <button class="btn" type="submit">提交</button>
+                    </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">菜品金额（单点）：</label>
-                    <input id="input_id" type="text" class="input_text" placeholder="" onblur="return CheckPrice()">
-                </div>
-                <div class="control-group">
-                    <label class="control-label">类别：</label>
-                    <label class="catergory">
-                        <input type="radio" name = 'radio_catergory' value="1" checked="checked">
-                        饭
-                    </label>
-                    <label class="catergory">
-                        <input type="radio" name = 'radio_catergory' value="2">
-                        面
-                    </label>
-                    <label class="catergory">
-                        <input type="radio" name = 'radio_catergory' value="3">
-                        饮料
-                    </label>
-                    <label class="catergory">
-                        <input type="radio" name = 'radio_catergory' value="4">
-                        其他
-                    </label>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">饭堂：</label>
-                    <select id="select_canteen">
-                        <option>勺园</option>
-                        <option>中关园</option>
-                        <option>农园</option>
-                    </select>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">上传菜品照片</label>
-                    <input type="file" name="file" accept=".png, .jpg, .jpeg" onblur="return Upload()">
-                </div>  
-                <div class="submit_btn" style="display: block;">
-                    <button class="btn" type="submit">提交</button>
-                </div>
-            </div>
+            </form>
         </div>
         <!-- CoreUI and necessary plugins-->
         <script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-3.6.0.min.js') }}"></script>
