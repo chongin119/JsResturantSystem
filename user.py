@@ -167,10 +167,15 @@ def createOrder():
         foodstr = ""
         sumOfPrice = 0.0
 
+        resturant = ""
         for j in info[i]:
+
+            if resturant == "" or resturant == "已被删除":
+                resturant = db.getResturantIdByFoodId(j['foodId'])
+
             foodstr += j['foodId'] + '_' + j['count'] + ';'
             sumOfPrice += int(j['count']) * j['price']
-        db.createOrder(foodstr,sumOfPrice,username,comment)
+        db.createOrder(foodstr,sumOfPrice,username,comment,resturant)
     del db
     del session["myCar"]
     return jsonify("Aaa")

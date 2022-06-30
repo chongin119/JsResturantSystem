@@ -28,7 +28,7 @@ def login():
             if permission == 0:
                 return redirect(url_for('adminBlue.index'))
             elif permission == 1:
-                return redirect(url_for('chefBlue.index'))
+                return redirect(url_for('chefBlue.chefMain'))
             else:
                 return redirect(url_for('userBlue.userOrder'))
         else:
