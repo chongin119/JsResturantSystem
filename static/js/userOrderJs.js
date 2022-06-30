@@ -127,11 +127,13 @@ function initTable(obj = "empty"){
             pageSize:10,
             pageList:"",
             dataType:"json",
+            customSort:"",
             queryParams:function (params){
                 let req = {
                     pageSize:params.limit,
                     pageNumber:params.offset,
                     data:JSON.stringify(obj),
+                    sortOrder:this.sortOrder,
                 }
                 return req;
             },
@@ -140,7 +142,9 @@ function initTable(obj = "empty"){
                 const ele = document.getElementById('foodTable');
                 ele.scrollIntoView();
                 //scroll(0,document.documentElement.clientHeight)
-
+            },
+            onLoadError: function (status, jqXHR) {
+               alert(JSON.stringify(status));
             },
         });
         _table.bootstrapTable('hideColumn','id');

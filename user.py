@@ -93,6 +93,7 @@ def getFoodCardHvPages():
     #print(jsonDict)
     offset = jsonDict["pageNumber"]
     Size = jsonDict["pageSize"]
+    sortOrder = jsonDict.get('sortOrder')
     data = json.loads(jsonDict["data"])
 
     resturantId = data["resturantId"]
@@ -101,9 +102,11 @@ def getFoodCardHvPages():
     needCategory = [key for key in needCategory if needCategory[key] != False]
 
     db = myDB(current_app.config["DBPATH"])
-    foods = db.getFoodCard(needCategory,resturantId)
+    foods = db.getFoodCard(needCategory,resturantId,sortOrder)
     del db
-
+    for i in foods:
+        print(i)
+    print('aaa')
     totalpage = len(foods)
     resp = {"total":totalpage,"rows":foods[offset:offset+10]}
 
