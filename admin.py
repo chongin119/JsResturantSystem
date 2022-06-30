@@ -12,8 +12,8 @@ adminBlue = Blueprint('adminBlue',__name__,url_prefix='/admin')
 @adminBlue.route('/logout',methods=["POST"])
 def logout():
     del session['username']
-    return url_for('authBlue.login')
-
+    return redirect(url_for('authBlue.login'))
+    
 @adminBlue.route('/', methods=["GET", 'POST'])
 def index():
     return render_template('originalAdmin.html')
