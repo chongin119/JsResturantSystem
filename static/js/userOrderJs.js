@@ -2,35 +2,156 @@ $(document).ready(function(){
     chooseResturantControl();
     carFunc();
     carClickControl();
+    initTable();
 });
 
-function initTable(){
-    let _table = $('#foodTable');
-    _table.bootstrapTable('destroy').bootstrapTable({
-        height:550,
-        locale: 'zh-CN',
-        columns:[{
-            title:'食品名称',
-            field:'foodName',
-            align:'center',
-            valign:'middle',
-        },{
-            title:'食品名称',
-            field:'foodName',
-            align:'center',
-            valign:'middle',
-        }]
+function carEvent(id){
+    let json;
+    let _thisId = id;
+    $.ajax({
+        url:"/user/getCarSession",
+        method:"post",
+        data:"",
+        async:false,
+        success:function(resp){
+            //console.log(resp);
+            try{
+                json = JSON.parse(resp);
+            }catch (e){
+                json = "";
+            }
+            //console.log("json",json);
+            if(json === "" || json === null){
+                json = {};
+                json[`${_thisId}`] = 1;
+            }else if (json.hasOwnProperty(`${_thisId}`) === false){
+                json[`${_thisId}`] = 1;
+            }else{
+                json[`${_thisId}`] += 1;
+            }
+        }
+    });
+
+    //console.log(json);
+
+    $.ajax({
+        url:"/user/setCarSession",
+        method:"post",
+        data:{"string":JSON.stringify(json)},
+        async:false,
+        success:function(resp){
+            carFunc(JSON.parse(resp));
+        }
     });
 }
 
-function testing(){
+function picEvent(id,name){
+    $.ajax({
+        url:"/user/getFoodPic",
+        method:"post",
+        data:{"id":id},
+        success:function(resp){
+            let imageSRC = 'data:image/jpeg;base64,' + resp;
+            $('#ModalPic>img').attr('src',imageSRC);
+            $('#exampleModalLabel').html(name);
+        }
+    });
+}
 
+function initTable(obj = "empty"){
+    let columns = [{
+            title:'食品名称',
+            field:'name',
+            align:'center',
+            valign:'middle',
+        },{
+            title:'售卖地方',
+            field:'rName',
+            align:'center',
+            valign:'middle',
+            cellStyle:function (value, row, index){
+                return {classes: 'text-primary'}
+            },
+        },{
+            title:'价格',
+            field:'price',
+            align:'center',
+            valign:'middle',
+            sortable:true,
+            cellStyle:function (value, row, index){
+                return {classes: 'text-success'}
+            },
+        },{
+            field:'optionFunc',
+            align:'center',
+            valign:'middle',
+            events:{
+                'click .pic': function(e,value,row,index){
+                    picEvent(row.id,row.name);
+                },
+                'click .car': function(e,value,row,index){
+                    carEvent(row.id);
+                }
+            },
+            formatter:function() {
+                return [
+                    '<button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>',
+                    '<button type="button" class="btn btn-warning mb-0 me-3 car" >加入购物车</button>'
+                ].join('')
+            },
+        },{
+            title:'食物ID',
+            field:'id',
+            align:'center',
+            valign:'middle',
+        }];
+    let _table = $('#foodTable');
+
+    if(obj === "empty"){
+        _table.bootstrapTable('destroy').bootstrapTable({
+            height:550,
+            locale: 'zh-CN',
+            columns: columns,
+        });
+        _table.bootstrapTable('hideColumn','id');
+    }else{
+        _table.bootstrapTable('destroy').bootstrapTable({
+            height:550,
+            locale: 'zh-CN',
+            columns: columns,
+            url:"/user/getFoodCardHvPages",
+            method:"post",
+            async:false,
+            sidePagination: 'server',
+            pagination:'true',
+            pageNumber:1,
+            pageSize:10,
+            pageList:"",
+            dataType:"json",
+            queryParams:function (params){
+                let req = {
+                    pageSize:params.limit,
+                    pageNumber:params.offset,
+                    data:JSON.stringify(obj),
+                }
+                return req;
+            },
+            queryParamsType: "limit",
+            onLoadSuccess:function(){
+                const ele = document.getElementById('foodTable');
+                ele.scrollIntoView();
+                //scroll(0,document.documentElement.clientHeight)
+
+            },
+        });
+        _table.bootstrapTable('hideColumn','id');
+
+    }
 }
 
 function chooseResturantControl(){
     let _restA = $('#resturantLst').children().children();
     _restA.on('click',function(){
-
         let _this = $(this);
         _restA.removeClass('myactive');
         _this.addClass('myactive');
@@ -38,257 +159,20 @@ function chooseResturantControl(){
         let _thisId = _this.attr('id');
         _thisId = _thisId.substr(1,this.length);
 
-        let categoryId = {};
+        let _req = {"categoryIds":{},"resturantId":""};
         $('#Categorys').children().children('input[type="checkbox"]').each(function (){
            let checked = $(this).prop('checked');
            let id = $(this).attr('id');
            id = id.substr(1,id.length);
-           categoryId[`${id}`] = checked;
+           _req['categoryIds'][`${id}`] = checked;
         });
 
-        categoryId.resturantId = _thisId
-
+        _req.resturantId = _thisId;
         clearCategoryEvent();
         addCategoryEvent();
 
-        $.ajax({
-            url:"/user/getFoodCard",
-            method:"post",
-            data:categoryId,
-            success:function(resp){
-                $('#foodLst').empty();
+        initTable(_req);
 
-
-                let content = "";
-                for(let i of resp.foods){
-                    content += `
-                        <li class="list-group-item" id=F${i.id}>
-                            <div class="d-flex flex-row align-items-center mb-0">
-                                <h5 class="me-3 mb-0">${i.name}</h5>
-                                <h5 class="text-primary me-auto mb-0">${i.rName}</h5>
-                                <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
-                                <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
-                                <button type="button" class="btn btn-warning mb-0 me-3 car" >加入购物车</button>
-                            </div>
-                        </li>                  
-                    `;
-                }
-                $('#foodLst').append(content);
-
-                clearCarEvent();
-                addCarEvent();
-                clearShowPicEvent();
-                addShowPicEvent();
-
-                content = '';
-                for(let i = 1 ;i<=resp.totalpage;i++){
-                    if(i === 1){
-                        content += `
-                            <li class="page-item"><a class="page-link myactive mypointer">${i}</a></li>
-                        `;
-                    }else{
-                        content += `
-                            <li class="page-item"><a class="page-link mypointer">${i}</a></li>
-                        `;
-                    }
-
-                }
-
-
-
-                $('#pageLst').empty();
-                $('#pageLst').append(content);
-
-                clearPageEvent();
-                addPageEvent();
-                document.getElementById('pageLst').scrollIntoView();
-            }
-        });
-    });
-}
-
-function addCarEvent(){
-    let _btns = $('#foodLst').children().children().children('button.car');
-
-    _btns.each(function (){
-        let _this = $(this);
-        let _thisId = _this.parent().parent().attr('id');
-        //console.log(_thisId);
-        _thisId = _thisId.substr(1,this.length);
-
-        _this.on('click',function (){
-            let json;
-            $.ajax({
-                url:"/user/getCarSession",
-                method:"post",
-                data:"",
-                async:false,
-                success:function(resp){
-                    //console.log(resp);
-                    try{
-                        json = JSON.parse(resp);
-                    }catch (e){
-                        json = "";
-                    }
-                    //console.log("json",json);
-                    if(json === "" || json === null){
-                        json = {};
-                        json[`${_thisId}`] = 1;
-                    }else if (json.hasOwnProperty(`${_thisId}`) === false){
-                        json[`${_thisId}`] = 1;
-                    }else{
-                        json[`${_thisId}`] += 1;
-                    }
-                }
-            });
-
-            //console.log(json);
-
-            $.ajax({
-                url:"/user/setCarSession",
-                method:"post",
-                data:{"string":JSON.stringify(json)},
-                async:false,
-                success:function(resp){
-                    carFunc(JSON.parse(resp));
-                }
-            });
-        });
-    });
-}
-
-function clearCarEvent(){
-    let _btns = $('#foodLst').children().children().children('button.car');
-
-    _btns.each(function (){
-        let _this = $(this);
-        let _thisId = _this.parent().parent().attr('id');
-        //console.log(_thisId);
-        _thisId = _thisId.substr(1,_thisId.length);
-
-        _this.off();
-    });
-}
-
-function clearPageEvent(){
-     let pageItem = $('#pageLst').children().children('a');
-
-    pageItem.each(function (){
-        let _this = $(this);
-        _this.off();
-    });
-}
-
-function addPageEvent(){
-    let pageItem = $('#pageLst').children().children('a');
-
-    pageItem.each(function (){
-        let _this = $(this);
-        _this.on('click',function(){
-            let _resturantId = $('#resturantLst').children().children('a.myactive').attr('id');
-            _resturantId = _resturantId.substr(1,_resturantId.length);
-            let categoryId = {};
-            $('#Categorys').children().children('input[type="checkbox"]').each(function (){
-               let checked = $(this).prop('checked');
-               let id = $(this).attr('id');
-               id = id.substr(1,id.length);
-               categoryId[`${id}`] = checked;
-            });
-
-            categoryId.resturantId = _resturantId;
-
-            let curPage = _this.html();
-            categoryId.curPage = curPage;
-
-            $.ajax({
-                url:"/user/getFoodCardHvPage",
-                method:"post",
-                data:categoryId,
-                success:function(resp){
-                    $('#foodLst').empty();
-
-
-                    let content = "";
-                    for(let i of resp.foods){
-                        content += `
-                            <li class="list-group-item" id=F${i.id}>
-                                <div class="d-flex flex-row align-items-center mb-0">
-                                    <h5 class="me-3 mb-0">${i.name}</h5>
-                                    <h5 class="text-primary me-auto mb-0">${i.rName}</h5>
-                                    <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
-                                    <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
-                                    <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
-                                </div>
-                            </li>                  
-                        `;
-                    }
-                    $('#foodLst').append(content);
-
-                    clearCarEvent();
-                    addCarEvent();
-                    clearShowPicEvent();
-                    addShowPicEvent();
-
-                    content = '';
-                    for(let i = 1 ;i<=resp.totalpage;i++){
-                        if(i === parseInt(curPage)){
-                            content += `
-                                <li class="page-item"><a class="page-link myactive mypointer">${i}</a></li>
-                            `;
-                        }else{
-                            content += `
-                                <li class="page-item"><a class="page-link mypointer">${i}</a></li>
-                            `;
-                        }
-
-                    }
-
-                    $('#pageLst').empty();
-                    $('#pageLst').append(content);
-
-                    clearPageEvent();
-                    addPageEvent();
-                    document.getElementById('pageLst').scrollIntoView();
-                }
-            });
-        });
-    });
-}
-
-function addShowPicEvent(){
-    let _btns = $('#foodLst').children().children().children('button.pic');
-
-    _btns.each(function (){
-        let _this = $(this);
-        let _thisId = _this.parent().parent().attr('id');
-        //console.log(_thisId);
-        _thisId = _thisId.substr(1,_thisId.length);
-
-        _this.on('click',function (){
-            $.ajax({
-                url:"/user/getFoodPic",
-                method:"post",
-                data:{"id":_thisId},
-                success:function(resp){
-                    let imageSRC = 'data:image/jpeg;base64,' + resp;
-                    $('#ModalPic>img').attr('src',imageSRC);
-                    $('#exampleModalLabel').html(_this.parent().children('h5:eq(0)').html());
-                }
-            });
-        });
-    });
-}
-
-function clearShowPicEvent(){
-    let _btns = $('#foodLst').children().children().children('button.pic');
-
-    _btns.each(function (){
-        let _this = $(this);
-        let _thisId = _this.parent().parent().attr('id');
-        //console.log(_thisId);
-        _thisId = _thisId.substr(1,_thisId.length);
-
-        _this.off();
     });
 }
 
@@ -307,72 +191,26 @@ function addCategoryEvent(){
 
     _category.children('input').each(function(){
         let _this = $(this);
-        let _resturantId = $('#resturantLst').children().children('a.myactive').attr('id');
+        let _resturantId = $('#resturantLst').children().children('button.myactive').attr('id');
         _resturantId = _resturantId.substr(1,_resturantId.length);
 
         _this.on('click',function(){
-            let categoryId = {};
+
+            let _req = {"categoryIds":{},"resturantId":""};
             $('#Categorys').children().children('input[type="checkbox"]').each(function (){
                let checked = $(this).prop('checked');
                let id = $(this).attr('id');
                id = id.substr(1,id.length);
-               categoryId[`${id}`] = checked;
+               _req['categoryIds'][`${id}`] = checked;
             });
 
-            categoryId.resturantId = _resturantId;
+            _req.resturantId = _resturantId;
             //console.log(_resturantId);
 
-            $.ajax({
-                url:"/user/getFoodCard",
-                method:"post",
-                data:categoryId,
-                success:function(resp){
-                    $('#foodLst').empty();
+            clearCategoryEvent();
+            addCategoryEvent();
 
-                    //console.log(resp);
-                    let content = "";
-                    for(let i of resp.foods){
-                        content += `
-                            <li class="list-group-item" id=F${i.id}>
-                                <div class="d-flex flex-row align-items-center mb-0">
-                                    <h5 class="me-3 mb-0">${i.name}</h5>
-                                    <h5 class="text-primary me-auto mb-0">${i.rName}</h5>
-                                    <h5 class="text-success mb-0 me-3">价格：${i.price}</h5>
-                                    <button type="button" class="btn btn-info mb-0 me-3 pic" data-bs-toggle="modal" data-bs-target="#exampleModal">视图</button>
-                                    <button type="button" class="btn btn-warning mb-0 me-3 car">加入购物车</button>
-                                </div>
-                            </li>                  
-                        `;
-                    }
-                    $('#foodLst').append(content);
-
-                    clearCarEvent();
-                    addCarEvent();
-                    clearShowPicEvent();
-                    addShowPicEvent();
-
-                    content = '';
-                    for(let i = 1 ;i<=resp.totalpage;i++){
-                        if(i === 1){
-                            content += `
-                                <li class="page-item"><a class="page-link mypointer myactive">${i}</a></li>
-                            `;
-                        }else{
-                            content += `
-                                <li class="page-item"><a class="page-link mypointer">${i}</a></li>
-                            `;
-                        }
-
-                    }
-
-                    $('#pageLst').empty();
-                    $('#pageLst').append(content);
-
-                    clearPageEvent();
-                    addPageEvent();
-                    document.getElementById('pageLst').scrollIntoView();
-                }
-            });
+            initTable(_req);
         })
     });
 }

@@ -82,6 +82,7 @@ class myDB():
 
     #获取所有食物(通过食堂和类别)
     def getFoodCard(self,category, resturantId):
+        #print(category)
         if len(category) == 0:#没有选等于全选
             categorys = self.c.execute("""SELECT id FROM category""").fetchall()
             for i in categorys:

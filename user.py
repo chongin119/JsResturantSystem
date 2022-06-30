@@ -69,6 +69,28 @@ def getFoodCard():
     resp = {"foods":foods,"totalpage":totalpage}
     return jsonify(resp)
 
+@userBlue.route('/getFoodCardHvPages',methods=["POST"])
+def getFoodCardHvPages():
+    jsonDict = request.json
+    #print(jsonDict)
+    offset = jsonDict["pageNumber"]
+    Size = jsonDict["pageSize"]
+    data = json.loads(jsonDict["data"])
+
+    resturantId = data["resturantId"]
+    needCategory = data["categoryIds"]
+
+    needCategory = [key for key in needCategory if needCategory[key] != False]
+
+    db = myDB(current_app.config["DBPATH"])
+    foods = db.getFoodCard(needCategory,resturantId)
+    del db
+
+    totalpage = len(foods)
+    resp = {"total":totalpage,"rows":foods[offset:offset+10]}
+
+    return jsonify(resp)
+
 @userBlue.route('/getFoodCardHvPage',methods=["POST"])
 def getFoodCardHvPage():
 

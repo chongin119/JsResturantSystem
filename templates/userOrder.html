@@ -69,8 +69,8 @@
                 <ul class="nav nav-pills d-flex flex-column" id="resturantLst">
                 {% for resturant in resturants %}
                     <li class="nav-item">
-                        <a class="nav-link text-secondary myR"
-                           style="cursor:pointer;" id="R{{ resturants[resturant].id }}">{{ resturants[resturant].name }}</a>
+                        <button class="nav-link text-secondary myR"
+                           style="cursor:pointer;" id="R{{ resturants[resturant].id }}">{{ resturants[resturant].name }}</button>
                     </li>    
                 {% endfor %}
                 </ul>
@@ -91,24 +91,11 @@
                         <ul class="list-group list-group-flush shadow" id="foodLst" >
                         </ul>
                     </div>
-                    <table id="foodTable"></table>
-                    <nav aria-label="Page navigation example">
-                      <ul class="pagination justify-content-center mt-3" id="PageItem" >
-                        <li class="page-item disabled">
-                          <a class="page-link " href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                          </a>
-                        </li>
-                          <div id="pageLst" class="d-flex flex-row">
-
-                          </div>
-                        <li class="page-item disabled">
-                          <a class="page-link " href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
+                    <table
+                            id="foodTable"
+                            data-pagination = "true"
+                            class="w-100"
+                    ></table>
                 </div>
             </div>
         </div>
