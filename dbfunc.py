@@ -263,6 +263,12 @@ class myDB():
             return judge[0]
         return False
 
+    #获取用户权限
+    def getPermissionByUsername(self,username):
+        userId = self.getUserIdByUsername(username)
+        permission = self.c.execute("""SELECT permission FROM userInfo WHERE id == ?""",(userId,)).fetchone()[0]
+        return permission
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()
