@@ -1,3 +1,6 @@
+$(document).ready(function(){
+   logoutControl();
+});
 function addMinusEvent(){
     let _Modal = $('#ModalCarBody');
 
@@ -179,4 +182,17 @@ function carFunc(obj = "empty"){
         _carCount.html(sum.toString());
         _carCount.removeClass('d-none');
     }
+}
+
+function logoutControl(){
+    $('#logout').on('click',function(){
+        $.ajax({
+            url:"/user/logout",
+            method:"POST",
+            success:function(resp){
+                console.log(resp);
+                window.location.href = resp;
+            }
+        });
+    });
 }

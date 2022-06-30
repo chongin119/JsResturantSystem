@@ -128,6 +128,76 @@ class myDB():
     def getUserIdByUsername(self,username):
         id = self.c.execute("""SELECT id FROM userInfo WHERE username == ?""",(username,)).fetchone()[0]
         return id
+
+    #获取食物名字byId
+    def getFoodNameById(self,id):
+        name = self.c.execute("""SELECT name FROM food WHERE id == ?""",(id,)).fetchone()
+        if name == None:
+            return "商品已被删除"
+        return name[0]
+
+    #获取餐厅名字byFoodId
+    def getResturantNameByFoodId(self,foodId):
+        name = self.c.execute("""SELECT r.name 
+                                FROM food AS f LEFT JOIN resturant AS r 
+                                ON f.sellFrom == r.id
+                                WHERE f.id == ?""",(foodId,)).fetchone()
+
+        if name == None:
+            return "商品已被删除"
+        return name[0]
+
+    #获取某用户所有订单
+    def getHistoryOrder(self,username,offset):
+        userId = self.getUserIdByUsername(username)
+        info = self.c.execute("""SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE fromUser == ?""",(userId,)).fetchall()
+
+        if info == []:
+            return {"total":0}
+
+        result = []
+        total = len(info)
+        #print(info)
+        for i in info:
+            tempDict = {"id":i[0],"time":i[2],"comment":i[3],"sumOfPrice":i[4],"status":i[5]}
+            content = ""
+            food = i[1].split(';')
+            resturant = ""
+            for cnt, j in enumerate(food):
+                if cnt == len(food) - 1:
+                    break
+                temp = j.split('_')
+                #print(temp[0])
+                name = self.getFoodNameById(temp[0])
+                content += f"{name} x{temp[1]}<br>"
+
+                if resturant == "" or resturant == "商品已被删除":
+                    resturant = self.getResturantNameByFoodId(temp[0])
+
+            tempDict["orderFood"] = content
+            tempDict["resturant"] = resturant
+            result.append(tempDict)
+
+        result = result[offset:offset+10]
+        return {"total":total,"rows":result}
+
+    #获取用户资讯
+    def getProfile(self,username):
+        userId = self.getUserIdByUsername(username)
+        info = self.c.execute("""SELECT username,profilePhoto,email,phoneNum FROM userInfo WHERE id == ?""",(userId,)).fetchone()
+        infoDict = {"username":info[0],"profilePhoto":info[1],"email":info[2],"phoneNum":info[3]}
+        return infoDict
+
+    #獲取用戶是否有頭象
+    def hvProfilePic(self,username):
+
+        userId = self.getUserIdByUsername(username)
+        judge = self.c.execute("""SELECT profilePhoto FROM userInfo WHERE id == ?""",(userId,)).fetchone()
+
+        if judge != None:
+            return judge[0]
+        return False
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()
@@ -153,6 +223,14 @@ class myDB():
                         """,(id, foodIds, userId, t, comment, sumOfPrice, 0))
         self.db.commit()
 
+    #更改用戶資訊
+    def changeProfile(self,username,email,phone,profilePic):
+        userId = self.getUserIdByUsername(username)
+
+        self.c.execute("""UPDATE userInfo SET profilePhoto = ?, email = ?, phoneNum = ? WHERE id == ?""",(profilePic, email, phone, userId))
+        self.db.commit()
+
+#我是分隔线------------------------------------------------------------
 
     #check the menu
     def checkmenu(self):
