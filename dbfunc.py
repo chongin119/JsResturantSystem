@@ -188,6 +188,39 @@ class myDB():
             id = int(id[0]) + 1
         self.c.execute("""INSERT INTO food(id, name, price, foodPic, sellFrom, category) VALUES (?,?,?,?,?,?)""", (id, name, price, foodpic, canteen, category))
         self.db.commit()
+    
+    #get the ordertable
+    def ordermanage(self):
+        info = self.c.execute("""SELECT id, time, orderFoodId, sumOfPrice, comment, status FROM orderTable""").fetchall()
+        username = self.c.execute("""SELECT userInfo.username FROM orderTable INNER JOIN userInfo WHERE orderTable.fromUser = userInfo.id""").fetchall()
+
+        id = []
+        date = []
+        name = []
+        list = []
+        sum = []
+        comment = []
+        status = []
+
+        length = len(info)
+        for i in range(0, length):
+            id.append(info[i][0])
+            date.append(info[i][1])
+            name.append(username[i][0])
+            list.append(info[i][2])
+            sum.append(info[i][3])
+            comment.append(info[i][4])
+            status.append(info[i][5])
+        
+        return {'id': id, 'date': date, 'name': name, 'list': list, 'sum': sum, 'comment': comment, 'status': status}
+
+    # get the detail
+    def listdetail(self, num, name):
+        print("name is", type(name))
+        choose = self.c.execute("""SELECT name FROM food WHERE id=?""", name).fetchone()
+        print("choose is", choose)
+        detail = choose + '*' +num
+        return detail
 
 if __name__ == '__main__':
     db = myDB('./web.db')

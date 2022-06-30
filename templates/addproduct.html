@@ -20,10 +20,10 @@
                 <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
               </div>
             <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
-                <li class="nav-item"><a class="nav-link" href="index.html">
+                <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
                     汇总信息</a></li>
-                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="adminManage.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
                     用户管理</a>
                 <ul class="nav-group-items">
@@ -56,9 +56,9 @@
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
                     商品管理</a></li>
-                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
-                    订单管理</a>
+                    订单管理</a></li>
             </ul>
         </div>
         <!-- 右边的部分 -->
@@ -68,15 +68,15 @@
             </header>
             <!-- 图表部分 -->
             <form method="post" action="/admin/addmenu" enctype="multipart/form-data">
-                <div class="body flex-grow-1 px-3" onsubmit="return submitInfo()">
+                <div class="body flex-grow-1 px-3">
                     <legend>菜品信息管理</legend>
                     <div class="control-group">
                         <label class="control-label">菜品名称：</label>
-                        <input id="input_id" type="text" class="input_text" name="name" placeholder="" onblur="return CheckName()">
+                        <input id="input_id" type="text" class="input_text" name="name" placeholder="">
                     </div>
                     <div class="control-group">
                         <label class="control-label">菜品金额（单点）：</label>
-                        <input id="input_id" type="text" class="input_text" name="price" placeholder="" onblur="return CheckPrice()">
+                        <input id="input_id" type="text" class="input_text" name="price" placeholder="">
                     </div>
                     <div class="control-group">
                         <label class="control-label">类别：</label>
@@ -106,8 +106,8 @@
                         </select>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">上传菜品照片</label>
-                        <input type="file" name="file" accept=".png, .jpg, .jpeg"/ onblur="return Upload()">
+                        <label class="control-label">上传菜品照片：</label>
+                        <input type="file" name="file" accept=".png, .jpg, .jpeg">
                     </div>  
                     <div class="submit_btn" style="display: block;">
                         <button class="btn" type="submit">提交</button>
@@ -124,7 +124,6 @@
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'js/addmenu.js') }}"></script>
     </body>
 </html>
 

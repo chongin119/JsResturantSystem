@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="../static/css/simplebar1.css">
+        <link rel="stylesheet" href="../static/css/simplebar.css">
+        <!-- Main styles for this application-->
+        <link href="../static/css/style.css" rel="stylesheet">
+        <!-- We use those styles to show code examples, you should remove them in your application.-->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism.css"> -->
+        <link href="../static/css/examples.css" rel="stylesheet">
+        <!-- Global site tag (gtag.js) - Google Analytics-->
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    </head>
+    <body>
+        <!-- 左边的部分 -->
+        <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+            <div class="sidebar-brand d-none d-md-flex">
+                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">学校餐饮系统
+                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+              </div>
+            <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+                <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
+                    <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
+                    汇总信息</a></li>
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="adminManage.html">
+                    <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
+                    用户管理</a>
+                <ul class="nav-group-items">
+                    <li class="nav-item"><a class="nav-link" href="{{ 'usermanage' }}"><span class="nav-icon"></span> Accordion</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/breadcrumb.html"><span class="nav-icon"></span> Breadcrumb</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/cards.html"><span class="nav-icon"></span> Cards</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/carousel.html"><span class="nav-icon"></span> Carousel</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/collapse.html"><span class="nav-icon"></span> Collapse</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/list-group.html"><span class="nav-icon"></span> List group</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/navs-tabs.html"><span class="nav-icon"></span> Navs &amp; Tabs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/pagination.html"><span class="nav-icon"></span> Pagination</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/placeholders.html"><span class="nav-icon"></span> Placeholders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/popovers.html"><span class="nav-icon"></span> Popovers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/progress.html"><span class="nav-icon"></span> Progress</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/scrollspy.html"><span class="nav-icon"></span> Scrollspy</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/spinners.html"><span class="nav-icon"></span> Spinners</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/tables.html"><span class="nav-icon"></span> Tables</a></li>
+                    <li class="nav-item"><a class="nav-link" href="base/tooltips.html"><span class="nav-icon"></span> Tooltips</a></li>
+                </ul>
+                </li>
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
+                    分类管理</a>
+                <ul class="nav-group-items">
+                    <li class="nav-item"><a class="nav-link" href="buttons/buttons.html"><span class="nav-icon"></span> Buttons</a></li>
+                    <li class="nav-item"><a class="nav-link" href="buttons/button-group.html"><span class="nav-icon"></span> Buttons Group</a></li>
+                    <li class="nav-item"><a class="nav-link" href="buttons/dropdowns.html"><span class="nav-icon"></span> Dropdowns</a></li>
+                </ul>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
+                    <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
+                    商品管理</a></li>
+                <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
+                    <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
+                    订单管理</a></li>
+            </ul>
+        </div>
+        <!-- 右边的部分 -->
+        <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+            <!-- 右边头顶部件 -->
+            <header class="header header-sticky mb-4">
+            </header>
+            <!-- 图表部分 -->
+            <div class="body flex-grow-1 px-3">
+                <table class="order">
+                    <tr>
+                        <th>订单号</th>
+                        <th>日期</th>
+                        <th>顾客</th>
+                        <th>清单</th>
+                        <th>总金额</th>
+                        <th>留言</th>
+                        <th>订单状态</th>
+                        <th>操作</th>
+                    </tr>
+                    {% for i in data %}
+                    <tr id="column{{i[0]}}">
+                        <td>
+                            <span>{{ i[0] }}</span>
+                        </td>
+                        <td>
+                            <span>{{ i[1] }}</span>
+                        </td>
+                        <td>
+                            <span>{{ i[2] }}</span>
+                        </td>
+                        <td>
+                            <span>{{ i[3] }}</span>
+                        </td>
+                        <td>
+                            <span>{{ i[4] }}</span>
+                        </td>
+                        <td>
+                            <span>{{ i[5] }}</span>
+                        </td>
+                        <td>
+                            <span>{{ i[6] }}</span>
+                        </td>
+                        <td>
+                            <button onclick="deletemenu(this)" id = "{{i[0]}}">
+                                下架
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <!-- CoreUI and necessary plugins-->
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/simplebar/dist/simplebar.min.js') }}"></script>
+        <!-- Plugins and scripts required by this view-->
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/chart.js/dist/chart.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/admin.js') }}"></script>
+    </body>
+</html>
+

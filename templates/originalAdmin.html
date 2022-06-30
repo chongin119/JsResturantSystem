@@ -19,10 +19,10 @@
                 <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
               </div>
             <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
-                <li class="nav-item"><a class="nav-link" href="index.html">
+                <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
                     汇总信息</a></li>
-                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                <li class="nav-group"><a class="nav-link nav-group-toggle" href="adminManage.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
                     用户管理</a>
                 <ul class="nav-group-items">
@@ -55,9 +55,9 @@
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
                     商品管理</a></li>
-                <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
+                <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
-                    订单管理</a>
+                    订单管理</a></li>
             </ul>
         </div>
         <!-- 右边的部分 -->

@@ -23,7 +23,7 @@ def usermanage():
     return render_template('adminManage.html', data = data)
     
 @adminBlue.route('/deletemenu', methods=['GET', 'POST'])
-def delete_menu():
+def deletemenu():
     db = myDB(current_app.config['DBPATH'])
     if request.method == 'POST':
         id = request.form.get('id')
@@ -53,3 +53,34 @@ def addmenu():
         return redirect(url_for('adminBlue.addproduct'))
 
     return render_template('addproduct.html')
+
+@adminBlue.route('/orderindex', methods=['GET', 'POST'])
+def orderindex():
+    return render_template('OrderManage.html')
+
+@adminBlue.route('/ordermanage', methods=['GET', 'POST'])
+def ordermanage():
+    db = myDB(current_app.config['DBPATH'])
+    info = db.ordermanage()
+    length = len(info['id'])
+    data = []
+    num = []
+    name = []
+    for i in range(0, length):
+        print(info['list'][i])
+        list = info['list'][i].split(';')
+        decode = list[:-1]
+        for i in range(len(decode)):
+            order = decode[i].split('_')
+            num.append(order[0])
+            name.append(order[1])
+    detail = []
+    print(num, name)
+    for i in range(0, length):
+        info = db.listdetail(num[i], int(name[i]))
+        detail.append(info)
+    for i in range(0, length):
+        data.append([info['id'][i], info['date'][i], detail[i], info['list'][i], info['sum'][i], info['comment'][i], info['status'][i]])
+    return render_template('OrderManage.html', data = data)
+
+
