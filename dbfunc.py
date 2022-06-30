@@ -81,7 +81,7 @@ class myDB():
         return categorys
 
     #获取所有食物(通过食堂和类别)
-    def getFoodCard(self,category, resturantId):
+    def getFoodCard(self,category, resturantId,sortOrder):
         #print(category)
         if len(category) == 0:#没有选等于全选
             categorys = self.c.execute("""SELECT id FROM category""").fetchall()
@@ -104,7 +104,13 @@ class myDB():
                                             WHERE f.category == ? and f.sellFrom == ? ORDER By f.id""",(i,resturantId)).fetchall()
                 for j in tempFood:
                     foods.append({'id':j[0],'name':j[1],'price':j[2],'rName':j[3]})
-
+        print(sortOrder)
+        if sortOrder == None:
+            foods.sort(key = lambda x:x['id'])
+        else:
+            if sortOrder == 'desc': rr = True
+            else:rr = False
+            foods.sort(key = lambda x:x['price'],reverse=rr)
         return foods
 
     #获取食物视图By Id
