@@ -121,7 +121,6 @@ function initTable(obj = "empty"){
             columns: columns,
             url:"/user/getFoodCardHvPages",
             method:"post",
-            async:false,
             sidePagination: 'server',
             pagination:'true',
             pageNumber:1,

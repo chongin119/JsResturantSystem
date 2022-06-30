@@ -11,6 +11,7 @@
     </title>
     <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/bootstrap.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/bootstrap-table.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/font-awesome.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename = 'css/myCss.css') }}">
 </head>
 <body>
@@ -54,16 +55,18 @@
                 <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    {% for i in navComponent %}
-                        <a class="nav-link {% if navComponent[i][1] == True %}
-                                            active" aria-current="page" 
-                                            {% else %}
-                                            " 
-                                            {% endif %} 
-                        href="{{ navComponent[i][2] }}">{{ navComponent[i][0] }}</a>   
-                    {% endfor %}
-                </div>
+                    <div class="navbar-nav me-auto">
+                        {% for i in navComponent %}
+                            <a class="nav-link {% if navComponent[i][1] == True %}
+                                                active" aria-current="page"
+                                                {% else %}
+                                                "
+                                                {% endif %}
+                            href="{{ navComponent[i][2] }}">{{ navComponent[i][0] }}</a>
+                        {% endfor %}
+
+                    </div>
+                    <button id="logout" type="button" class="btn btn-sm btn-outline-light">登出</button>
                 </div>
             </div>
         </nav> 

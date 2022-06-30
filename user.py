@@ -1,3 +1,5 @@
+import base64
+
 from flask import Flask, request, redirect, render_template, session, url_for
 from flask import Blueprint, current_app, jsonify
 from sqlalchemy import true
@@ -10,7 +12,7 @@ userBlue = Blueprint('userBlue',__name__,url_prefix='/user')
 @userBlue.route('/userOrder',methods=["GET"])
 def userOrder():
     username = session["username"]
-    navComponent = {"1":["用户订餐",True,"/user/userOrder"],"2":["查询过去订单",False,"/user/userHistory"],"3":["更改个人资料",False]}
+    navComponent = {"1":["用户订餐",True,"/user/userOrder"],"2":["查询过去订单",False,"/user/userHistory"],"3":["更改个人资料",False,"/user/userProfile"]}
 
     db = myDB(current_app.config["DBPATH"])
     pics = db.randomChoosePic()
@@ -29,45 +31,61 @@ def userOrder():
 @userBlue.route('/userHistory',methods=["GET"])
 def userHistory():
     username = session["username"]
-    navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",True,"/user/userHistory"],"3":["更改个人资料",False]}
-
-    db = myDB(current_app.config["DBPATH"])
-
-    del db
+    navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",True,"/user/userHistory"],"3":["更改个人资料",False,"/user/userProfile"]}
 
     return render_template('userHistory.html',
                             username = username,
                             navComponent = navComponent,)
 
-#webAPI below
-@userBlue.route('/getFoodCard',methods=["POST"])
-def getFoodCard():
+@userBlue.route('/userProfile',methods=["GET","POST"])
+def userProfile():
+    if request.method == "POST":
+        #print(request.files,request.form)
+        db = myDB(current_app.config['DBPATH'])
+        username = session["username"]
+        pic = request.files.get('profilePic')
+        pic = pic.read()
 
-    needCategoryItems = request.form.items()
-    needCategory = {}
-    resturantId = ""
-    for item in needCategoryItems:
+        judge = db.hvProfilePic(username)
+        if pic != b'':
+            picstring = base64.b64encode(pic)
 
-        if item[0] != "resturantId":
-            #num = item[0][item[0].find('[') + 1 : item[0].find(']')]
-            needCategory[item[0]] = item[1]
+            picstring = str(picstring,'utf-8')
+        elif judge == False:
+            picstring = None
         else:
-            resturantId = item[1]
+            picstring = judge
 
-    #print(needCategory)
-    needCategory = [key for key in needCategory if needCategory[key] != 'false']
+
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        if email == "":email = None
+        if phone == "":phone = None
+
+
+
+        db.changeProfile(username,email,phone,picstring)
+        del db
+
+        return redirect(url_for('userBlue.userProfile'))
+    username = session["username"]
+    navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",False,"/user/userHistory"],"3":["更改个人资料",True,"/user/userProfile"]}
 
     db = myDB(current_app.config["DBPATH"])
-    foods = db.getFoodCard(needCategory,resturantId)
+    info = db.getProfile(username)
     del db
 
+    return render_template('userProfile.html',
+                            username = username,
+                            navComponent = navComponent,
+                            profile = info,)
 
-    totalpage = len(foods) // 10 + 1
-    if len(foods) > 10:
-        foods = foods[0:10]
+#webAPI below
 
-    resp = {"foods":foods,"totalpage":totalpage}
-    return jsonify(resp)
+@userBlue.route('/logout',methods=["POST"])
+def logout():
+    del session['username']
+    return url_for('authBlue.login')
 
 @userBlue.route('/getFoodCardHvPages',methods=["POST"])
 def getFoodCardHvPages():
@@ -89,37 +107,6 @@ def getFoodCardHvPages():
     totalpage = len(foods)
     resp = {"total":totalpage,"rows":foods[offset:offset+10]}
 
-    return jsonify(resp)
-
-@userBlue.route('/getFoodCardHvPage',methods=["POST"])
-def getFoodCardHvPage():
-
-    needCategoryItems = request.form.items()
-    needCategory = {}
-    resturantId = ""
-    curPage = 0
-    for item in needCategoryItems:
-        if item[0] == "resturantId":
-            resturantId = item[1]
-        elif item[0] == "curPage":
-            curPage = int(item[1])
-        else:
-            #num = item[0][item[0].find('[') + 1 : item[0].find(']')]
-            needCategory[item[0]] = item[1]
-
-
-
-    needCategory = [key for key in needCategory if needCategory[key] != 'false']
-
-    db = myDB(current_app.config["DBPATH"])
-    foods = db.getFoodCard(needCategory,resturantId)
-    del db
-
-    totalpage = len(foods) // 10 + 1
-    if len(foods) > 10:
-        foods = foods[(curPage - 1) * 10 : 10 + (curPage - 1) * 10]
-
-    resp = {"foods":foods,"totalpage":totalpage}
     return jsonify(resp)
 
 @userBlue.route('/getFoodPic',methods=["POST"])
@@ -203,3 +190,15 @@ def changeSession():
 
     session["myCar"] = json.dumps(jsonDict)
     return jsonify('aaa')
+
+@userBlue.route('/getHistoryOrder',methods = ["POST"])
+def getHistoryOrder():
+    jsonstring = request.json
+    offset = jsonstring["pageNumber"]
+    Size = jsonstring["pageSize"]
+    username = session["username"]
+    db = myDB(current_app.config['DBPATH'])
+    info = db.getHistoryOrder(username,offset)
+    del db
+    #print(info)
+    return jsonify(info)
