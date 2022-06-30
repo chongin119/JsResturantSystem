@@ -1,4 +1,5 @@
 from email.mime import base
+from pydoc import describe
 from unicodedata import category
 from flask import Flask, request, redirect, render_template, session, url_for
 from flask import Blueprint, current_app, jsonify
@@ -67,20 +68,33 @@ def ordermanage():
     num = []
     name = []
     for i in range(0, length):
-        print(info['list'][i])
         list = info['list'][i].split(';')
         decode = list[:-1]
-        for i in range(len(decode)):
-            order = decode[i].split('_')
-            num.append(order[0])
-            name.append(order[1])
+        num1 = []
+        name1 = []
+        for j in range(0, len(decode)):
+            order = decode[j].split('_')
+            print(order)
+            num1.append(order[0])
+            name1.append(order[1])
+        num.append(num1)
+        name.append(name1)
     detail = []
-    print(num, name)
+
+    for i in range(0, len(num)):
+        detail1 = []
+        for j in range(0, len(num[i])):
+            info = db.listdetail(num[i][j], int(name[i][j]))
+            detail1.append(info)
+        detail.append(detail1)
+    
+    describe = []
+    for i in range(0, len(detail)):
+        describe.append(','.join(detail[i]))
+    print(describe)
+
     for i in range(0, length):
-        info = db.listdetail(num[i], int(name[i]))
-        detail.append(info)
-    for i in range(0, length):
-        data.append([info['id'][i], info['date'][i], detail[i], info['list'][i], info['sum'][i], info['comment'][i], info['status'][i]])
+        data.append([info['id'][i], info['date'][i], info['name'][i], describe[i], info['sum'][i], info['comment'][i], info['status'][i]])
     return render_template('OrderManage.html', data = data)
 
 

@@ -295,9 +295,10 @@ class myDB():
     # get the detail
     def listdetail(self, num, name):
         print("name is", type(name))
-        choose = self.c.execute("""SELECT name FROM food WHERE id=?""", name).fetchone()
-        print("choose is", choose)
-        detail = choose + '*' +num
+        choose = self.c.execute("""SELECT name FROM food WHERE id=?""",(name,)).fetchone()[0]
+        if choose == None:
+            detail = "该菜品已经售光了"
+        detail = choose + '*' + num
         return detail
 
 if __name__ == '__main__':
