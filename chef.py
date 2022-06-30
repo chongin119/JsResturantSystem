@@ -32,7 +32,15 @@ def getHistoryOrder():
     Size = jsonstring["pageSize"]
     username = session["username"]
     db = myDB(current_app.config['DBPATH'])
-    info = db.getHistoryOrder(username,offset)
+    info = db.getHistoryOrderChef(username,offset)
     del db
     #print(info)
     return jsonify(info)
+
+@chefBlue.route('/finishOrder',methods = ["POST"])
+def finishOrder():
+    id = request.form.get('id')
+    db = myDB(current_app.config["DBPATH"])
+    db.finishOrder(id)
+    del db
+    return jsonify('aaa')

@@ -161,7 +161,7 @@ class myDB():
     #获取某用户所有订单
     def getHistoryOrder(self,username,offset):
         userId = self.getUserIdByUsername(username)
-        info = self.c.execute("""SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE fromUser == ?""",(userId,)).fetchall()
+        info = self.c.execute("""SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE fromUser == ? ORDER BY id DESC""",(userId,)).fetchall()
 
         if info == []:
             return {"total":0}
@@ -202,9 +202,11 @@ class myDB():
     # 获取某负责人未完成订单
     def getHistoryOrderChef(self, username, offset):
         userId = self.getUserIdByUsername(username)
+        ownRest = self.c.execute("""SELECT r.id FROM resturant AS r LEFT JOIN userInfo as u ON r.operator == u.id WHERE u.id == ?""",(userId,)).fetchone()[0]
+        print(ownRest)
         info = self.c.execute(
-            """SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE fromUser == ?""",
-            (userId,)).fetchall()
+            """SELECT id,orderFoodId,time, comment,sumOfPrice,status FROM orderTable WHERE sellFrom == ? and status == ?""",
+            (ownRest,0)).fetchall()
 
         if info == []:
             return {"total": 0}
@@ -216,7 +218,16 @@ class myDB():
             tempDict = {"id": i[0], "time": i[2], "comment": i[3], "sumOfPrice": i[4], "status": i[5]}
             content = ""
             food = i[1].split(';')
-            resturant = ""
+
+            resturant = self.c.execute("""SELECT r.name FROM orderTable AS o
+                                                        LEFT JOIN resturant AS r 
+                                                        ON o.sellFrom == r.id WHERE sellFrom == ? """,
+                                       (ownRest,)).fetchone()
+            if resturant == None:
+                resturant = ""
+            else:
+                resturant = resturant[0]
+
             for cnt, j in enumerate(food):
                 if cnt == len(food) - 1:
                     break
@@ -276,6 +287,11 @@ class myDB():
 
         self.c.execute("""INSERT INTO orderTable (id, orderFoodId, fromUser, time, comment, sumOfPrice, status, sellFrom) VALUES (?,?,?,?,?,?,?,?)
                         """,(id, foodIds, userId, t, comment, sumOfPrice, 0, resturantId))
+        self.db.commit()
+
+    #完成订单
+    def finishOrder(self,id):
+        self.c.execute("""UPDATE orderTable SET status = ? WHERE id == ?""",(1,id));
         self.db.commit()
 
     #更改用戶資訊

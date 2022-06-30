@@ -39,12 +39,24 @@ function initTable(){
             field:'status',
             align:'center',
             valign:'middle',
-            formatter:function (value, row, index){
-                if(row.status === 0 ){
-                    return '<button class="btn btn-warning disabled">没有完成</button>'
-                }else{
-                    return '<button class="btn btn-success disabled">已完成</button>'
+            events:{
+                'click .tofinish':function(e,value,row,index){
+                    let _orderId = row.id;
+                    $.ajax({
+                       url:"/chef/finishOrder",
+                       method:"post",
+                       data:{"id":_orderId},
+                       success:function(){
+                            $('#chefTable').bootstrapTable('remove', {
+                                field: 'id',
+                                values: [_orderId]
+                              })
+                       }
+                    });
                 }
+            },
+            formatter:function (value, row, index){
+                return '<button class="btn btn-warning tofinish">按此完成</button>'
             },
         }];
     let _table = $('#chefTable');
