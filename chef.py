@@ -42,5 +42,6 @@ def finishOrder():
     id = request.form.get('id')
     db = myDB(current_app.config["DBPATH"])
     db.finishOrder(id)
+    db.updateExpAndPoint(id)
     del db
     return jsonify('aaa')
