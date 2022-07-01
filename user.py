@@ -12,7 +12,10 @@ userBlue = Blueprint('userBlue',__name__,url_prefix='/user')
 @userBlue.route('/userOrder',methods=["GET"])
 def userOrder():
     username = session["username"]
-    navComponent = {"1":["用户订餐",True,"/user/userOrder"],"2":["查询过去订单",False,"/user/userHistory"],"3":["更改个人资料",False,"/user/userProfile"]}
+    navComponent = {"1":["用户订餐",True,"/user/userOrder"],
+                    "2":["查询过去订单",False,"/user/userHistory"],
+                    "3":["更改个人资料",False,"/user/userProfile"],
+                    "4":["提交反馈",False,"/user/userFeedBack"]}
 
     db = myDB(current_app.config["DBPATH"])
     pics = db.randomChoosePic()
@@ -37,7 +40,10 @@ def userOrder():
 @userBlue.route('/userHistory',methods=["GET"])
 def userHistory():
     username = session["username"]
-    navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",True,"/user/userHistory"],"3":["更改个人资料",False,"/user/userProfile"]}
+    navComponent = {"1":["用户订餐",False,"/user/userOrder"],
+                    "2":["查询过去订单",True,"/user/userHistory"],
+                    "3":["更改个人资料",False,"/user/userProfile"],
+                    "4":["提交反馈",False,"/user/userFeedBack"]}
     db = myDB(current_app.config["DBPATH"])
     point = db.getPoint(username)
     level = db.getLevel(username)
@@ -84,7 +90,10 @@ def userProfile():
 
         return redirect(url_for('userBlue.userProfile'))
     username = session["username"]
-    navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",False,"/user/userHistory"],"3":["更改个人资料",True,"/user/userProfile"]}
+    navComponent = {"1":["用户订餐",False,"/user/userOrder"],
+                    "2":["查询过去订单",False,"/user/userHistory"],
+                    "3":["更改个人资料",True,"/user/userProfile"],
+                    "4":["提交反馈",False,"/user/userFeedBack"]}
 
     db = myDB(current_app.config["DBPATH"])
     info = db.getProfile(username)
@@ -100,6 +109,28 @@ def userProfile():
                             point=point,
                             level=level,
                             lm=lm,)
+
+@userBlue.route('/userFeedBack',methods=["GET"])
+def userFeedBack():
+    username = session["username"]
+    navComponent = {"1":["用户订餐",False,"/user/userOrder"],
+                    "2":["查询过去订单",False,"/user/userHistory"],
+                    "3":["更改个人资料",False,"/user/userProfile"],
+                    "4":["提交反馈",True,"/user/userFeedBack"]}
+    db = myDB(current_app.config["DBPATH"])
+    point = db.getPoint(username)
+    level = db.getLevel(username)
+    lm = db.getLevelMinus(username)
+    resturant = db.getResturant()
+    del db
+    print(resturant)
+    return render_template('userFeedBack.html',
+                            username = username,
+                            navComponent = navComponent,
+                            point = point,
+                            level = level,
+                            lm = lm,
+                            resturant = resturant,)
 
 #webAPI below
 
