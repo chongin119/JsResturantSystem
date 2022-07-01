@@ -48,7 +48,6 @@ def addmenu():
         encoded = base64.b64encode(file.read())
         foodpic = str(encoded, 'utf-8')
         canteen = ''.join(request.values.getlist('canteen'))
-        print(name, price, foodpic, canteen, category)
         db = myDB(current_app.config['DBPATH'])
         db.addmenu(name, price, foodpic, canteen, category)
         del db
@@ -149,5 +148,17 @@ def usermanage():
 
     return render_template('UserManage.html')
 
+@adminBlue.route('/userinfo', methods=['GET'])
+def userinfo():
+    db = myDB(current_app.config['DBPATH'])
+    info = db.getaccount()
+    del db
+    data = []
+    decode = myAES('IloveJsLessonTeachingByZW')
+    for i in range(0, len(info['name'])):
+        str = info['pd'][i]
+        pd = decode.decrypt(str)
+        data.append([info['name'][i], pd, info['email'][i], info['phone'][i], info['permission'][i]])
+    return render_template('UserInfoManage.html', data = data)
 
 

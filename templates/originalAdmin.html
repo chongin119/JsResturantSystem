@@ -6,7 +6,7 @@
         <!-- Main styles for this application-->
         <link href="../static/css/style.css" rel="stylesheet">
         <!-- We use those styles to show code examples, you should remove them in your application.-->
-        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.23.0/themes/prism.css"> -->
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pris,mjs@1.23.0/themes/prism.css"> -->
         <link href="../static/css/examples.css" rel="stylesheet">
         <!-- Global site tag (gtag.js) - Google Analytics-->
         <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
@@ -30,9 +30,9 @@
                     <img src="{{ url_for('static', filename = 'assets/brand/menu.svg') }}" class="nav-icon">
                     菜单可视化</a>
                 </li>
-                <li class="nav-group"><a class="nav-link" href="#">
+                <li class="nav-group"><a class="nav-link" href="#={{ 'userinfo' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
-                    分类管理</a>
+                    人员信息</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">

@@ -410,6 +410,24 @@ class myDB():
         self.c.execute("""UPDATE orderTable SET status=1 WHERE id=?""", id)
         self.db.commit()
 
+    # get the account info
+    def getaccount(self):
+        info = self.c.execute("""SELECT username, password, email, phoneNum, permission FROM userInfo""").fetchall()
+        name = []
+        pd = []
+        email = []
+        phone = []
+        permission = []
+
+        length = len(info)
+        for i in range(0, length):
+            name.append(info[i][0])
+            pd.append(info[i][1])
+            email.append(info[i][2])
+            phone.append(info[i][3])
+            permission.append(info[i][4])
+        return {'name': name, 'pd': pd, 'email': email, 'phone': phone, 'permission': permission}
+    
 if __name__ == '__main__':
     db = myDB('./web.db')
     del db

@@ -53,16 +53,13 @@
             </header>
             <!-- 图表部分 -->
             <div class="body flex-grow-1 px-3">
-                <table class="order">
+                <table class="menu">
                     <tr>
-                        <th>订单号</th>
-                        <th>日期</th>
-                        <th>顾客</th>
-                        <th>清单</th>
-                        <th>总金额</th>
-                        <th>留言</th>
-                        <th>订单状态</th>
-                        <th>操作</th>
+                        <th>姓名</th>
+                        <th>密码</th>
+                        <th>邮箱地址</th>
+                        <th>电话号码</th>
+                        <th>权限等级</th>
                     </tr>
                     {% for i in data %}
                     <tr id="column{{i[0]}}">
@@ -79,25 +76,13 @@
                             <span>{{ i[3] }}</span>
                         </td>
                         <td>
-                            <span>{{ i[4] }}</span>
-                        </td>
-                        <td>
-                            <span>{{ i[5] }}</span>
-                        </td>
-                        <td>
-                            {% if i[6] == 0 %}
-                            <span>没完成</span>
-                            {% elif i[6] == 1 %}
-                            <span>订单已经完成</span>
-                        {% endif %}
-                        </td>
-                        <td>
-                            <button onclick="deleteorder(this)" id = "{{i[0]}}">
-                                取消
-                            </button>
-                            <button onclick="acceptorder(this)" id = "{{i[0]}}">
-                                接受
-                            </button>
+                            {% if i[4] == 0 %}
+                            <span>管理员</span>
+                            {% elif i[4] == 1 %}
+                            <span>餐厅负责人</span>
+                            {% elif i[4] == 2 %}
+                            <span>顾客</span>
+                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -109,6 +94,8 @@
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/simplebar/dist/simplebar.min.js') }}"></script>
         <!-- Plugins and scripts required by this view-->
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/chart.js/dist/chart.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'js/admin.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'js/deletemenu.js') }}"></script>
