@@ -352,6 +352,20 @@ class myDB():
         self.c.execute("""UPDATE userInfo SET exp = ?, point = ? WHERE id == ?""",(exp, point, userId))
         self.db.commit()
 
+    #发送反馈
+    def sendFeedBackComment(self,username, rid, comment):
+        id = self.c.execute("""SELECT id FROM userFeedBack ORDER BY id DESC""").fetchone()
+        if id == None:
+            id = 0
+        else:
+            id = int(id[0]) + 1
+
+        userId = self.getUserIdByUsername(username)
+        chefId = self.c.execute("""SELECT operator FROM resturant WHERE id == ?""",(rid,)).fetchone()[0]
+
+        self.c.execute("""INSERT INTO userFeedBack (id, content, feedBack, userId, chefId) VALUES (?,?,?,?,?)""",(id, comment, "", userId, chefId))
+        self.db.commit()
+
 #我是分隔线------------------------------------------------------------
 
     #check the menu

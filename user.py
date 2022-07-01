@@ -123,20 +123,25 @@ def userFeedBack():
     lm = db.getLevelMinus(username)
     resturant = db.getResturant()
     del db
-    print(resturant)
+    del resturant[0]
     return render_template('userFeedBack.html',
                             username = username,
                             navComponent = navComponent,
                             point = point,
                             level = level,
                             lm = lm,
-                            resturant = resturant,)
+                            resturant = resturant,
+                            need = need,)
 
 #webAPI below
 
 @userBlue.route('/logout',methods=["POST"])
 def logout():
     del session['username']
+    try:
+        del session['myCar']
+    except:
+        pass
     return url_for('authBlue.login')
 
 @userBlue.route('/getFoodCardHvPages',methods=["POST"])
@@ -260,3 +265,14 @@ def getHistoryOrder():
     del db
     #print(info)
     return jsonify(info)
+
+@userBlue.route('/sendFeedBackComment',methods = ["POST"])
+def sendFeedBackComment():
+    Rid = request.form.get('id')
+    comment = request.form.get('comment')
+    username = session["username"]
+
+    db = myDB(current_app.config["DBPATH"])
+    db.sendFeedBackComment(username,Rid, comment)
+    del db
+    return jsonify('aaa')

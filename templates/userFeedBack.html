@@ -12,20 +12,35 @@
               <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                   选择餐厅
               </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <input id="rrInput" type="hidden" value=""/>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="RRdropDown">
                   {% for i in resturant %}
-                      <li><a class="dropdown-item" href="#">{{ i }}</a></li>
+                      <li id="RR{{ resturant[i].id }}"><a class="dropdown-item">{{ resturant[i].name }}</a></li>
                   {% endfor %}
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </div>
         </div>
         <textarea placeholder="输入反馈留言" id="feedBackComment" class="form-control mt-5 mb-3" style="height: 20vh" aria-label="With textarea"></textarea>
+        <div class="w-100 d-flex flex-row justify-content-end">
+            <button class="btn btn-primary mt-5" id="submitBtn">提交</button>
+        </div>
     </div>
 {% endblock body %}
 
+{% block toast %}
+    <div class="toast-container position-fixed p-3 bottom-0 end-0" id="toastPlacement">
+        <div class="toast" data-bs-delay="5000">
+          <div class="toast-header bg-danger">
+            <h3 class="me-auto text-light mb-auto me-auto">通知</h3>
+            <button type="button" class="btn-close " data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            <h5>你的反馈已发送!!!</h5>
+          </div>
+        </div>
+    </div>
+{% endblock toast %}
+
 {% block script%}
-    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userProfileJs.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename = 'js/userFeedBackJs.js') }}"></script>
 {% endblock script %}
