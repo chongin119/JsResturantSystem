@@ -157,10 +157,10 @@ def getCarLst():
 @userBlue.route('/createOrder',methods = ["POST"])
 def createOrder():
     info = request.json
-    print(info)
+    #print(info)
     comment = info[1]
     info = info[0]
-    print(info,comment)
+    #print(info,comment)
     username = session["username"]
     db = myDB(current_app.config["DBPATH"])
     infoDict = {}

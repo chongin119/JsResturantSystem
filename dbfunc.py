@@ -105,7 +105,7 @@ class myDB():
                                             WHERE f.category == ? and f.sellFrom == ? ORDER By f.id""",(i,resturantId)).fetchall()
                 for j in tempFood:
                     foods.append({'id':j[0],'name':j[1],'price':j[2],'rName':j[3]})
-        print(sortOrder)
+        #print(sortOrder)
         if sortOrder == None:
             foods.sort(key = lambda x:x['id'])
         else:
