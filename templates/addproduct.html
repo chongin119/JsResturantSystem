@@ -60,29 +60,22 @@
                     </div>
                     <div class="control-group">
                         <label class="control-label">类别：</label>
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="1" checked="checked">
-                            饭
-                        </label>
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="2">
-                            面
-                        </label>
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="3">
-                            饮料
-                        </label>
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="4">
-                            其他
-                        </label>
+                        {% for i in categorys %}
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name = 'radio_catergory' value="{{ categorys[i].id }}"
+                                       {% if i == 0 %}checked="checked"{% endif %}>
+                                {{ categorys[i].name }}
+                            </label>
+                        {% endfor %}
                     </div>
                     <div class="control-group">
                         <label class="control-label"  style="float:left">饭堂：</label>
                         <select class='form-select w-25' id="select_canteen" name="canteen">
-                            <option value="1">勺园</option>
-                            <option value="2">中关园</option>
-                            <option value="3">农园</option>
+                            {% for i in resturant %}
+                                {% if i != 0 %}
+                                    <option value="{{ resturant[i].id }}">{{ resturant[i].name }}</option>
+                                {% endif %}
+                            {% endfor %}
                         </select>
                     </div>
                     <div class="control-group">

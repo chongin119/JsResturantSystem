@@ -3,8 +3,8 @@ import io
 from dbfunc import myDB
 
 if __name__ == '__main__':
-    path = '2.jpg'
-    id = 11
+    path = 'temp.jpg'
+    id = 12
     db = myDB('web.db')
     with open(path,'rb') as f:
         

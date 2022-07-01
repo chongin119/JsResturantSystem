@@ -36,7 +36,11 @@ def deletemenu():
 
 @adminBlue.route('/addproduct', methods=['GET', 'POST'])
 def addproduct():
-    return render_template('addproduct.html')
+    db = myDB(current_app.config["DBPATH"])
+    info = db.getCategorys()
+    rest = db.getResturant()
+    del db
+    return render_template('addproduct.html',categorys = info,resturant = rest)
 
 @adminBlue.route('/addmenu', methods=['GET', 'POST'])
 def addmenu():
@@ -64,6 +68,7 @@ def acceptorder():
     db = myDB(current_app.config['DBPATH'])
     id = request.form.get('ac_id')
     db.acceptorder(id)
+    db.updateExpAndPoint(id)
     del db
     return redirect(url_for('adminBlue.ordermanage'))
 
@@ -108,7 +113,6 @@ def ordermanage():
         db = myDB(current_app.config['DBPATH'])
         id = request.form.get('id')
         db.deleteorder(id)
-        db.updateExpAndPoint(id)
         del db
         return redirect(url_for('adminBlue.orderindex'))
 
