@@ -1,6 +1,7 @@
 $(document).ready(function(){
     logoutControl();
     initTable();
+    initFeedBackTable();
 });
 
 function initTable(){
@@ -102,5 +103,59 @@ function logoutControl(){
                 window.location.href = resp;
             }
         });
+    });
+}
+
+function initFeedBackTable(){
+    let icons = {
+        detailOpen: 'fa fa-plus',
+        detailClose: 'fa fa-minus'
+    };
+    let columns = [{
+            title:'用户',
+            field:'username',
+            align:'center',
+            valign:'middle',
+        },{
+            title:'反馈内容',
+            field:'comment',
+            align:'center',
+            valign:'middle',
+            cellStyle:function (value, row, index){
+                return {classes: 'text-danger'}
+            },
+        }];
+    let _table = $('#FeedBackTable');
+
+    _table.bootstrapTable('destroy').bootstrapTable({
+        height:550,
+        locale: 'zh-CN',
+        columns: columns,
+        url:"/chef/getFeedBackComment",
+        method:"post",
+        sidePagination: 'server',
+        pagination:'true',
+        pageNumber:1,
+        pageSize:10,
+        pageList:"",
+        detailView:true,
+        icons:icons,
+        detailFormatter:function (index,row){
+            let html =[];
+            html.push(`<h5 class='text-danger'>用户联络资讯:</h5>
+                        <span class="text-primary">电话：${row.phone}</span>
+                        <br>
+                        <span class="text-primary">电邮：${row.email}</span>`);
+            return html.join('');
+        },
+        dataType:"json",
+            queryParams:function (params){
+                let req = {
+                    pageSize:params.limit,
+                    pageNumber:params.offset,
+                }
+                return req;
+            },
+            queryParamsType: "limit",
     });
 }

@@ -8,15 +8,31 @@ chefBlue = Blueprint('chefBlue',__name__,url_prefix='/chef')
 @chefBlue.route('/chefMain',methods=["GET"])
 def chefMain():
     username = session["username"]
-    navComponent = {"1":["处理订单",True,"/chef/chefMain"]}
+    navComponent = {"1":["处理订单",True,"/chef/chefMain"],"2":["查看反馈",False,"/chef/chefFeedBack"]}
 
     db = myDB(current_app.config["DBPATH"])
-
+    rname = db.getResturantNameByOperator(username)
     del db
 
     return render_template('chefMain.html',
                             username = username,
-                            navComponent = navComponent, )
+                            navComponent = navComponent,
+                           rname = rname,)
+
+@chefBlue.route('/chefFeedBack',methods=["GET"])
+def chefFeedBack():
+    username = session["username"]
+    navComponent = {"1":["处理订单",False,"/chef/chefMain"],"2":["查看反馈",True,"/chef/chefFeedBack"]}
+
+    db = myDB(current_app.config["DBPATH"])
+    rname = db.getResturantNameByOperator(username)
+    del db
+
+    return render_template('chefFeedBack.html',
+                            username = username,
+                            navComponent = navComponent,
+                           rname = rname,)
+
 
 #webAPI below
 
@@ -45,3 +61,14 @@ def finishOrder():
     db.updateExpAndPoint(id)
     del db
     return jsonify('aaa')
+
+@chefBlue.route('/getFeedBackComment',methods = ["POST"])
+def getFeedBackComment():
+    username = session["username"]
+    jsonstring = request.json
+    offset = jsonstring["pageNumber"]
+
+    db = myDB(current_app.config["DBPATH"])
+    info = db.getFeedBack(username, offset)
+    del db
+    return jsonify(info)

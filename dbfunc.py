@@ -165,6 +165,13 @@ class myDB():
             return "已被删除"
         return name[0]
 
+    #获取某负责人的餐厅名字
+    def getResturantNameByOperator(self,username):
+        chefId = self.getUserIdByUsername(username)
+        name = self.c.execute("""SELECT name FROM resturant WHERE operator == ?""",(chefId,)).fetchone()[0]
+
+        return name
+
     #获取某用户所有订单
     def getHistoryOrder(self,username,offset):
         userId = self.getUserIdByUsername(username)
@@ -297,6 +304,23 @@ class myDB():
 
         return 1000.0 - (LM % 1000.0)
 
+    #获取反馈内容
+    def getFeedBack(self,username,offset):
+        chefId = self.getUserIdByUsername(username)
+        info = self.c.execute("""SELECT f.content, u.username, u.phoneNum, u.email FROM
+                                userFeedBack AS f LEFT JOIN userInfo AS u ON f.userId == u.id WHERE f.chefId == ? ORDER BY f.id DESC""",(chefId,)).fetchall()
+        resp = {"total":0,"rows":[]}
+        total = len(info)
+        if total == 0:
+            return resp
+        resp["total"] = total
+
+        info = info[offset:offset+10]
+        for i in info:
+            tempDict = {"comment":i[0], "username": i[1], "phone": i[2], "email":i[3]}
+            resp["rows"].append(tempDict)
+        return resp
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()
@@ -363,8 +387,9 @@ class myDB():
         userId = self.getUserIdByUsername(username)
         chefId = self.c.execute("""SELECT operator FROM resturant WHERE id == ?""",(rid,)).fetchone()[0]
 
-        self.c.execute("""INSERT INTO userFeedBack (id, content, feedBack, userId, chefId) VALUES (?,?,?,?,?)""",(id, comment, "", userId, chefId))
+        self.c.execute("""INSERT INTO userFeedBack (id, content, userId, chefId) VALUES (?,?,?,?)""",(id, comment, userId, chefId))
         self.db.commit()
+
 
 #我是分隔线------------------------------------------------------------
 
