@@ -1,3 +1,4 @@
+from cmath import inf
 import sqlite3 as s3
 from ENDE import myAES
 import os.path
@@ -384,17 +385,19 @@ class myDB():
         return detail
     
     #get the username
-    def getUserName(self):
-        name = self.c.execute("""SELECT username FROM userInfo""").fetchall()
+    def getUserInfo(self):
+        info = self.c.execute("""SELECT id, username FROM userInfo""").fetchall()
+        idlist = []
         nameList = []
-        for i in range(0, len(name)):
-            nameList.append(name[i][0])
-        return nameList
+        for i in range(0, len(info)):
+            idlist.append(info[i][0])
+            nameList.append(info[i][1])
+        return {'id': idlist, 'name': nameList}
 
 
     #update the userinfo
-    def changeInfo(self, name, pd, email, phone, userpic):
-        self.c.execute("""UPDATE userInfo SET password=?, email=?, phoneNum=?, profilePhoto=? WHERE username=?""",(pd, email, phone, userpic, name))
+    def changeInfo(self, id, pd, email, phone, userpic):
+        self.c.execute("""UPDATE userInfo SET password=?, email=?, phoneNum=?, profilePhoto=? WHERE id=?""",(pd, email, phone, userpic, id))
         self.db.commit()
 
     #delete the order

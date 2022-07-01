@@ -74,9 +74,9 @@
                     <legend>人员管理系统</legend>
                     <div class="control-group">
                         <label class="control-label">姓名：</label>
-                        <select id="select_username" name="username">
-                            {% for i in data%}
-                            <option value="1">{{ i }}</option>
+                        <select class='select_user' name="select_username">
+                            {% for i in list%}
+                            <option value="{{ i[0] }}">{{ i[1] }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -110,7 +110,7 @@
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/chart.js/dist/chart.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/deletemenu.js') }}"></script>
     </body>
 </html>
 

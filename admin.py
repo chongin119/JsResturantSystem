@@ -66,8 +66,8 @@ def acceptorder():
     id = request.form.get('ac_id')
     db.acceptorder(id)
     del db
-    # return redirect(url_for('adminBlue.ordermanage'))
-    return render_template('OrderManage.html')
+    return redirect(url_for('adminBlue.ordermanage'))
+    # return render_template('OrderManage.html')
 
 @adminBlue.route('/ordermanage', methods=['GET', 'POST'])
 def ordermanage():
@@ -116,24 +116,34 @@ def ordermanage():
 @adminBlue.route('/userlayout', methods=['GET', 'POST'])
 def userlayout():
     db = myDB(current_app.config['DBPATH'])
-    data = db.getUsername()
+    data = db.getUserInfo()
+    list = []
+    for i in range(0, len(data['id'])):
+        list.append([data['id'][i], data['name'][i]])
     del db
-    return render_template('UserManage.html', data = data)
+    return render_template('UserManage.html', list = list)
 
 @adminBlue.route('/usermanage', methods=['GET', 'POST'])
 def usermanage():
     if request.method == 'POST':
-        name = request.form.get('name')
+        id = ''.join(request.values.getlist('select_username'))
+        print(id)
         password = request.form.get('password')
+
+        # encrypt password
         encode = myAES('IloveJsLessonTeachingByZW')
         pd = encode.encrypt(password)
+
         email = request.form.get('email')
         phone = request.form.get('phone')
+
+        # transfer file into base64
         photo = request.files.get('file')
         encoded = base64.b64encode(photo.read())
         userpic = str(encoded, 'utf-8')
+
         db = myDB(current_app.config['DBPATH'])
-        db.changeInfo(name, pd, email, phone, userpic)
+        db.changeInfo(id, pd, email, phone, userpic)
         del db
         return redirect(url_for('adminBlue.userlayout'))
 
