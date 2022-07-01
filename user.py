@@ -18,11 +18,17 @@ def userOrder():
     pics = db.randomChoosePic()
     resturants = db.getResturant()
     categorys = db.getCategorys()
+    point = db.getPoint(username)
+    level = db.getLevel(username)
+    lm = db.getLevelMinus(username)
     del db 
 
     return render_template('userOrder.html', 
                             username = username, 
-                            navComponent = navComponent, 
+                            navComponent = navComponent,
+                            point = point,
+                            level = level,
+                            lm = lm,
                             pics = pics, 
                             picslen = len(pics),
                             resturants = resturants,
@@ -32,10 +38,17 @@ def userOrder():
 def userHistory():
     username = session["username"]
     navComponent = {"1":["用户订餐",False,"/user/userOrder"],"2":["查询过去订单",True,"/user/userHistory"],"3":["更改个人资料",False,"/user/userProfile"]}
-
+    db = myDB(current_app.config["DBPATH"])
+    point = db.getPoint(username)
+    level = db.getLevel(username)
+    lm = db.getLevelMinus(username)
+    del db
     return render_template('userHistory.html',
                             username = username,
-                            navComponent = navComponent,)
+                            navComponent = navComponent,
+                            point = point,
+                            level = level,
+                            lm = lm,)
 
 @userBlue.route('/userProfile',methods=["GET","POST"])
 def userProfile():
@@ -65,6 +78,8 @@ def userProfile():
 
 
         db.changeProfile(username,email,phone,picstring)
+
+
         del db
 
         return redirect(url_for('userBlue.userProfile'))
@@ -73,12 +88,18 @@ def userProfile():
 
     db = myDB(current_app.config["DBPATH"])
     info = db.getProfile(username)
+    point = db.getPoint(username)
+    level = db.getLevel(username)
+    lm = db.getLevelMinus(username)
     del db
 
     return render_template('userProfile.html',
                             username = username,
                             navComponent = navComponent,
-                            profile = info,)
+                            profile = info,
+                            point=point,
+                            level=level,
+                            lm=lm,)
 
 #webAPI below
 
@@ -157,10 +178,10 @@ def getCarLst():
 @userBlue.route('/createOrder',methods = ["POST"])
 def createOrder():
     info = request.json
-    print(info)
+    #print(info)
     comment = info[1]
     info = info[0]
-    print(info,comment)
+    #print(info,comment)
     username = session["username"]
     db = myDB(current_app.config["DBPATH"])
     infoDict = {}

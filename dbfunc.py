@@ -105,7 +105,7 @@ class myDB():
                                             WHERE f.category == ? and f.sellFrom == ? ORDER By f.id""",(i,resturantId)).fetchall()
                 for j in tempFood:
                     foods.append({'id':j[0],'name':j[1],'price':j[2],'rName':j[3]})
-        print(sortOrder)
+        #print(sortOrder)
         if sortOrder == None:
             foods.sort(key = lambda x:x['id'])
         else:
@@ -276,6 +276,27 @@ class myDB():
         permission = self.c.execute("""SELECT permission FROM userInfo WHERE id == ?""",(userId,)).fetchone()[0]
         return permission
 
+    #获取积分
+    def getPoint(self,username):
+        userId = self.getUserIdByUsername(username)
+        point = self.c.execute("""SELECT point FROM userInfo WHERE id == ?""",(userId,)).fetchone()[0]
+        return point
+
+    #获取等级
+    def getLevel(self,username):
+        userId = self.getUserIdByUsername(username)
+        level = self.c.execute("""SELECT exp FROM userInfo WHERE id == ?""",(userId,)).fetchone()[0]
+
+        return int(level//1000)
+
+    #获取差多少升级
+    def getLevelMinus(self,username):
+        userId = self.getUserIdByUsername(username)
+        LM = self.c.execute("""SELECT exp FROM userInfo WHERE id == ?""",(userId,)).fetchone()[0]
+
+
+        return 1000.0 - (LM % 1000.0)
+
     #insert del update
     def insertUser(self,username,password):
         id = self.c.execute("""SELECT id FROM userInfo ORDER BY id DESC""").fetchone()
@@ -284,7 +305,7 @@ class myDB():
         else:
             id = int(id[0]) + 1
 
-        self.c.execute("""INSERT INTO userInfo (id,username,password,profilePhoto,email,phoneNum,permission) VALUES (?,?,?,?,?,?,?)""",(id,username,password,None,None,None,2))
+        self.c.execute("""INSERT INTO userInfo (id,username,password,profilePhoto,email,phoneNum,permission,exp,point) VALUES (?,?,?,?,?,?,?,?,?)""",(id,username,password,None,None,None,2,0,0))
 
         self.db.commit()
 
@@ -312,6 +333,23 @@ class myDB():
         userId = self.getUserIdByUsername(username)
 
         self.c.execute("""UPDATE userInfo SET profilePhoto = ?, email = ?, phoneNum = ? WHERE id == ?""",(profilePic, email, phone, userId))
+        self.db.commit()
+
+    #完成订单时增加积分和等级
+    def updateExpAndPoint(self,orderId):
+        info = self.c.execute("""SELECT fromUser,sumOfPrice FROM orderTable WHERE id == ?""",(orderId,)).fetchone()
+        userId = info[0]
+        sumOfPrice = info[1]
+
+        info = self.c.execute("""SELECT exp,point FROM userInfo WHERE id == ?""",(userId,)).fetchone()
+        exp = info[0]
+        point = info[1]
+
+        exp += sumOfPrice
+        point += sumOfPrice
+        if exp > 5000.0:
+            exp = 5000.0
+        self.c.execute("""UPDATE userInfo SET exp = ?, point = ? WHERE id == ?""",(exp, point, userId))
         self.db.commit()
 
 #我是分隔线------------------------------------------------------------
