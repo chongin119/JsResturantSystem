@@ -23,14 +23,13 @@ def foodmanage():
     data = []
     for i in range(0, length):
         data.append([info['id'][i], info['foodpic'][i], info['name'][i], info['price'][i], info['sellplace'][i]])
-    return render_template('adminManage.html', data = data)
+    return render_template('FoodManage.html', data = data)
     
 @adminBlue.route('/deletemenu', methods=['GET', 'POST'])
 def deletemenu():
     db = myDB(current_app.config['DBPATH'])
     if request.method == 'POST':
         id = request.form.get('id')
-        print(id)
         db.deletemenu(id)
         del db
     return redirect(url_for('adminBlue.foodmanage'))
@@ -61,44 +60,58 @@ def addmenu():
 def orderindex():
     return render_template('OrderManage.html')
 
+@adminBlue.route('/acceptorder', methods=['POST'])
+def acceptorder():
+    db = myDB(current_app.config['DBPATH'])
+    id = request.form.get('ac_id')
+    db.acceptorder(id)
+    del db
+    # return redirect(url_for('adminBlue.ordermanage'))
+    return render_template('OrderManage.html')
+
 @adminBlue.route('/ordermanage', methods=['GET', 'POST'])
 def ordermanage():
-    db = myDB(current_app.config['DBPATH'])
-    info = db.ordermanage()
-    length = len(info['id'])
-    data = []
-    num = []
-    name = []
-    for i in range(0, length):
-        list = info['list'][i].split(';')
-        decode = list[:-1]
-        num1 = []
-        name1 = []
-        for j in range(0, len(decode)):
-            order = decode[j].split('_')
-            print(order)
-            num1.append(order[0])
-            name1.append(order[1])
-        num.append(num1)
-        name.append(name1)
-    detail = []
+    if request.method == 'GET':
+        db = myDB(current_app.config['DBPATH'])
+        info = db.ordermanage()
+        length = len(info['id'])
+        data = []
+        num = []
+        name = []
+        for i in range(0, length):
+            list = info['list'][i].split(';')
+            decode = list[:-1]
+            num1 = []
+            name1 = []
+            for j in range(0, len(decode)):
+                order = decode[j].split('_')
+                name1.append(order[0])
+                num1.append(order[1])
+            num.append(num1)
+            name.append(name1)
+        detail = []
 
-    for i in range(0, len(num)):
-        detail1 = []
-        for j in range(0, len(num[i])):
-            info2 = db.listdetail(num[i][j], int(name[i][j]))
-            detail1.append(info2)
-        detail.append(detail1)
+        for i in range(0, len(num)):
+            detail1 = []
+            for j in range(0, len(num[i])):
+                info2 = db.listdetail(num[i][j], int(name[i][j]))
+                detail1.append(info2)
+            detail.append(detail1)
+        del db
+        describe = []
+        for i in range(0, len(detail)):
+            describe.append(','.join(detail[i]))
+
+        for i in range(0, length):
+            data.append([info['id'][i], info['date'][i], info['name'][i], describe[i], info['sum'][i], info['comment'][i], info['status'][i]])
+        return render_template('OrderManage.html', data = data)
     
-    describe = []
-    for i in range(0, len(detail)):
-        describe.append(','.join(detail[i]))
-    print(describe)
-
-
-    for i in range(0, length):
-        data.append([info['id'][i], info['date'][i], info['name'][i], describe[i], info['sum'][i], info['comment'][i], info['status'][i]])
-    return render_template('OrderManage.html', data = data)
+    if request.method == 'POST':
+        db = myDB(current_app.config['DBPATH'])
+        id = request.form.get('id')
+        db.deleteorder(id)
+        del db
+        return redirect(url_for('adminBlue.orderindex'))
 
 @adminBlue.route('/userlayout', methods=['GET', 'POST'])
 def userlayout():

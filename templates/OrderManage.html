@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="../static/css/simplebar1.css">
         <link rel="stylesheet" href="../static/css/simplebar.css">
+        <link rel="stylesheet" href="../static/css/foodmanage.css">
         <!-- Main styles for this application-->
         <link href="../static/css/style.css" rel="stylesheet">
         <!-- We use those styles to show code examples, you should remove them in your application.-->
@@ -101,11 +102,18 @@
                             <span>{{ i[5] }}</span>
                         </td>
                         <td>
-                            <span>{{ i[6] }}</span>
+                            {% if i[6] == 0 %}
+                            <span>没完成</span>
+                            {% elif i[6] == 1 %}
+                            <span>订单已经完成</span>
+                        {% endif %}
                         </td>
                         <td>
-                            <button onclick="deletemenu(this)" id = "{{i[0]}}">
-                                下架
+                            <button onclick="deleteorder(this)" id = "{{i[0]}}">
+                                取消
+                            </button>
+                            <button onclick="acceptorder(this)" id = "{{i[0]}}">
+                                接受
                             </button>
                         </td>
                     </tr>
@@ -118,10 +126,9 @@
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/coreui/dist/js/coreui.bundle.min.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/simplebar/dist/simplebar.min.js') }}"></script>
         <!-- Plugins and scripts required by this view-->
-        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/chart.js/dist/chart.min.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/chartjs/dist/js/coreui-chartjs.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'node_modules/@coreui/utils/dist/coreui-utils.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename = 'js/admin.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename = 'js/deletemenu.js') }}"></script>
     </body>
 </html>
 

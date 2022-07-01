@@ -377,7 +377,6 @@ class myDB():
 
     # get the detail
     def listdetail(self, num, name):
-        print("name is", type(name))
         choose = self.c.execute("""SELECT name FROM food WHERE id=?""",(name,)).fetchone()[0]
         if choose == None:
             detail = "该菜品已经售光了"
@@ -398,7 +397,15 @@ class myDB():
         self.c.execute("""UPDATE userInfo SET password=?, email=?, phoneNum=?, profilePhoto=? WHERE username=?""",(pd, email, phone, userpic, name))
         self.db.commit()
 
+    #delete the order
+    def deleteorder(self, id):
+        self.c.execute("""DELETE FROM orderTable WHERE id=?""",id)
+        self.db.commit()
 
+    #accpet the order
+    def acceptorder(self, id):
+        self.c.execute("""UPDATE orderTable SET status=1 WHERE id=?""", id)
+        self.db.commit()
 
 if __name__ == '__main__':
     db = myDB('./web.db')
