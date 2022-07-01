@@ -1,4 +1,4 @@
-{% extends 'originalAuthLayout.html' %}
+{% extends 'AuthLayout.html' %}
 
 {% block title %}
     未名餐饮登入
@@ -7,7 +7,12 @@
 {% block body %}
 
 <div class="registerbackground position-absolute">
-    <h1 class="text-center text-primary fw-bold mt-5 text-danger" style="height: 10vh;font-size: xxx-large">未名餐饮平台</h1>
+    <div class="d-flex flex-row w-100 justify-content-center align-items-center">
+        <img style="height:8vh" src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}"/>
+        <h1 class="text-center text-primary fw-bold mt-5 text-danger" style="height: 10vh;font-size: xxx-large">
+            未名餐饮平台
+        </h1>
+    </div>
     <div class="bg-light p-5 position-absolute top-50 start-50 translate-middle shadow rounded-3 ">
         <form class="row g-3" action="#" method="post">
             <h1 class="text-center">
