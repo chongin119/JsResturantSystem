@@ -34,12 +34,3 @@ function acceptorder(object){
     });
     window.location.href = window.location.href;
 }
-
-// function select_id(object){
-//     var val = $(object).attr('id').value;
-//     $.ajax({
-//         url:'usermanage',
-//         method: 'POST',
-//         data:{'id': val},
-//     });
-// }
