@@ -16,28 +16,27 @@
         <!-- 左边的部分 -->
         <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
             <div class="sidebar-brand d-none d-md-flex">
-                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">学校餐饮系统
-                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+                <img src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}" class="sidebar-brand-full" height="60" alt="CoreUI Logo">未名餐饮后台管理系统
               </div>
             <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
                 <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
                     汇总信息</a></li>
+                <li class="nav-group"><a class="nav-link" href="{{ 'userinfo' }}">
+                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
+                    所有人员信息</a>
+                </li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'userlayout' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
-                    用户管理</a>
+                    修改用户信息</a>
                 </li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'foodmanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/menu.svg') }}" class="nav-icon">
-                    菜单可视化</a>
-                </li>
-                <li class="nav-group"><a class="nav-link" href="{{ 'userinfo' }}">
-                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
-                    人员信息</a>
+                    菜单信息</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
-                    菜单管理</a></li>
+                    上传菜单</a></li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
                     订单管理</a></li>
@@ -48,7 +47,7 @@
             <!-- 右边头顶部件 -->
             <header class="header header-sticky mb-4">
                 <form method="post" action="/admin/logout" enctype="multipart/form-data">
-                    <button class="btn" type="submit">登出</button>
+                    <button class="btn btn-warning" type="submit"><span class="cil-contrast btn-icon mr-2"></span>登出</button>
                 </form>
             </header>
             <!-- 图表部分 -->
@@ -56,46 +55,46 @@
                 <div class="body flex-grow-1 px-3">
                     <legend>菜品信息管理</legend>
                     <div class="control-group">
-                        <label class="control-label">菜品名称：</label>
-                        <input id="input_id" type="text" class="input_text" name="name" placeholder="">
+                        <label class="input-group" style="float:left">菜品名称：</label>
+                        <input id="input_id" type="text" class="form-control w-25" name="name" placeholder="input the name">
                     </div>
                     <div class="control-group">
-                        <label class="control-label">菜品金额（单点）：</label>
-                        <input id="input_id" type="text" class="input_text" name="price" placeholder="">
+                        <label class="input-group" style="float:left">菜品金额（单点）：</label>
+                        <input id="input_id" type="text" class="form-control w-25" name="price" placeholder="input the price">
                     </div>
                     <div class="control-group">
                         <label class="control-label">类别：</label>
-                        <label class="catergory">
-                            <input type="radio" name = 'radio_catergory' value="1" checked="checked">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="1" checked="checked">
                             饭
                         </label>
-                        <label class="catergory">
-                            <input type="radio" name = 'radio_catergory' value="2">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="2">
                             面
                         </label>
-                        <label class="catergory">
-                            <input type="radio" name = 'radio_catergory' value="3">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="3">
                             饮料
                         </label>
-                        <label class="catergory">
-                            <input type="radio" name = 'radio_catergory' value="4">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name = 'radio_catergory' value="4">
                             其他
                         </label>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">饭堂：</label>
-                        <select id="select_canteen" name="canteen">
+                        <label class="control-label"  style="float:left">饭堂：</label>
+                        <select class='form-select w-25' id="select_canteen" name="canteen">
                             <option value="1">勺园</option>
                             <option value="2">中关园</option>
                             <option value="3">农园</option>
                         </select>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">上传菜品照片：</label>
-                        <input type="file" name="file" accept=".png, .jpg, .jpeg">
+                        <label class="input-group">上传菜品照片：</label>
+                        <input type="file" class="form-control w-25" name="file" accept=".png, .jpg, .jpeg">
                     </div>  
                     <div class="submit_btn" style="display: block;">
-                        <button class="btn" type="submit">提交</button>
+                        <button class="btn btn-info" type="submit">提交</button>
                     </div>
                 </div>
             </form>

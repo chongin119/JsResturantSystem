@@ -16,28 +16,27 @@
         <!-- 左边的部分 -->
         <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
             <div class="sidebar-brand d-none d-md-flex">
-                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">学校餐饮系统
-                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+                <img src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}" class="sidebar-brand-full" height="60" alt="CoreUI Logo">未名餐饮后台管理系统
               </div>
             <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
                 <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
                     汇总信息</a></li>
+                <li class="nav-group"><a class="nav-link" href="{{ 'userinfo' }}">
+                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
+                    所有人员信息</a>
+                </li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'userlayout' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
-                    用户管理</a>
+                    修改用户信息</a>
                 </li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'foodmanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/menu.svg') }}" class="nav-icon">
-                    菜单可视化</a>
-                </li>
-                <li class="nav-group"><a class="nav-link" href="{{ 'userinfo' }}">
-                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
-                    人员信息</a>
+                    菜单信息</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
-                    菜单管理</a></li>
+                    上传菜单</a></li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
                     订单管理</a></li>
@@ -48,18 +47,19 @@
             <!-- 右边头顶部件 -->
             <header class="header header-sticky mb-4">
                 <form method="post" action="/admin/logout" enctype="multipart/form-data">
-                    <button class="btn" type="submit">登出</button>
+                    <button class="btn btn-warning" type="submit"><span class="cil-contrast btn-icon mr-2"></span>登出</button>
                 </form>
             </header>
             <!-- 图表部分 -->
             <div class="body flex-grow-1 px-3">
+                <legend>订单信息</legend>
                 <table class="order">
                     <tr>
                         <th>订单号</th>
                         <th>日期</th>
                         <th>顾客</th>
                         <th>清单</th>
-                        <th>总金额</th>
+                        <th>总金额(元)</th>
                         <th>留言</th>
                         <th>订单状态</th>
                         <th>操作</th>
@@ -86,16 +86,16 @@
                         </td>
                         <td>
                             {% if i[6] == 0 %}
-                            <span>没完成</span>
+                            <span>未接受</span>
                             {% elif i[6] == 1 %}
-                            <span>订单已经完成</span>
+                            <span>订单接受</span>
                         {% endif %}
                         </td>
                         <td>
-                            <button onclick="deleteorder(this)" id = "{{i[0]}}">
-                                取消
+                            <button onclick="deleteorder(this)" class="btn btn-danger" id = "{{i[0]}}">
+                                取消订单
                             </button>
-                            <button onclick="acceptorder(this)" id = "{{i[0]}}">
+                            <button class="btn btn-primary" id = "{{i[0]}}">
                                 接受
                             </button>
                         </td>

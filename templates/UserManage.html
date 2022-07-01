@@ -16,28 +16,27 @@
         <!-- 左边的部分 -->
         <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
             <div class="sidebar-brand d-none d-md-flex">
-                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">学校餐饮系统
-                <img src="{{ url_for('static', filename = 'assets/brand/system.svg') }}" class="sidebar-brand-narrow" width="46" height="46" alt="CoreUI Logo">
+                <img src="{{ url_for('static', filename = 'assets/img/foodIcon.png') }}" class="sidebar-brand-full" height="60" alt="CoreUI Logo">未名餐饮后台管理系统
               </div>
             <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
                 <li class="nav-item"><a class="nav-link" href="originalAdmin.html">
                     <img src="{{ url_for('static', filename = 'assets/brand/conclude.svg') }}" class="nav-icon">
                     汇总信息</a></li>
+                <li class="nav-group"><a class="nav-link" href="{{ 'userinfo' }}">
+                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
+                    所有人员信息</a>
+                </li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'userlayout' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/root.svg') }}" class="nav-icon">
-                    用户管理</a>
+                    修改用户信息</a>
                 </li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'foodmanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/menu.svg') }}" class="nav-icon">
-                    菜单可视化</a>
-                </li>
-                <li class="nav-group"><a class="nav-link" href="{{ 'userinfo' }}">
-                    <img src="{{ url_for('static', filename = 'assets/brand/catergory.svg') }}" class="nav-icon">
-                    人员信息</a>
+                    菜单信息</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{{ 'addproduct' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/product.svg') }}" class="nav-icon">
-                    菜单管理</a></li>
+                    上传菜单</a></li>
                 <li class="nav-group"><a class="nav-link" href="{{ 'ordermanage' }}">
                     <img src="{{ url_for('static', filename = 'assets/brand/order.svg') }}" class="nav-icon">
                     订单管理</a></li>
@@ -48,7 +47,7 @@
             <!-- 右边头顶部件 -->
             <header class="header header-sticky mb-4">
                 <form method="post" action="/admin/logout" enctype="multipart/form-data">
-                    <button class="btn" type="submit">登出</button>
+                    <button class="btn btn-warning" type="submit"><span class="cil-contrast btn-icon mr-2"></span>登出</button>
                 </form>
             </header>
             <!-- 图表部分 -->
@@ -56,31 +55,31 @@
                 <div class="body flex-grow-1 px-3">
                     <legend>人员管理系统</legend>
                     <div class="control-group">
-                        <label class="control-label">姓名：</label>
-                        <select class='select_user' name="select_username">
+                        <label class="control-label" style="float:left">姓名：</label>
+                        <select class='form-select w-25' name="select_username">
                             {% for i in list%}
                             <option value="{{ i[0] }}">{{ i[1] }}</option>
                             {% endfor %}
                         </select>
                     </div>
                     <div class="control-group">
-                        <label class="control-label">修改密码：</label>
-                        <input id="input_id" type="text" class="input_text" name="password" placeholder="">
+                        <label class="input-group" style="float:left">修改密码：</label>
+                        <input id="input_id" type="text" class="form-control w-25" name="password" placeholder="input your new password">
                     </div>
                     <div class="control-group">
-                        <label class="control-label">修改邮箱：</label>
-                        <input id="input_id" type="text" class="input_text" name="email" placeholder="">
+                        <label class="input-group" style="float:left">修改邮箱：</label>
+                        <input id="input_id" type="text" class="form-control w-25" name="email" placeholder="input your new email">
                     </div>
                     <div class="control-group">
-                        <label class="control-label">修改电话号码：</label>
-                        <input id="input_id" type="text" class="input_text" name="phone" placeholder="">
+                        <label class="input-group" style="float:left">修改电话号码：</label>
+                        <input id="input_id" type="text" class="form-control w-25" name="phone" placeholder="input your new phone">
                     </div>
                     <div class="control-group">
-                        <label class="control-label">上传菜品照片：</label>
-                        <input type="file" name="file" accept=".png, .jpg, .jpeg">
+                        <label class="input-group" style="float:left">上传菜品照片：</label>
+                        <input type="file" class="form-control w-25" name="file" accept=".png, .jpg, .jpeg">
                     </div>  
-                    <div class="submit_btn" style="display: block;">
-                        <button class="btn" type="submit">确认修改</button>
+                    <div class="submit_btn">
+                        <button class="btn btn-info" type="submit">确认修改</button>
                     </div>
                 </div>
             </form>
