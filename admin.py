@@ -13,7 +13,7 @@ def logout():
     
 @adminBlue.route('/', methods=["GET", 'POST'])
 def index():
-    return render_template('originalAdmin.html')
+    return redirect(url_for('adminBlue.userinfo'))
 
 @adminBlue.route('/foodmanage', methods=['GET', 'POST'])
 def foodmanage():
@@ -66,7 +66,6 @@ def acceptorder():
     db.acceptorder(id)
     del db
     return redirect(url_for('adminBlue.ordermanage'))
-    # return render_template('OrderManage.html')
 
 @adminBlue.route('/ordermanage', methods=['GET', 'POST'])
 def ordermanage():
@@ -109,6 +108,7 @@ def ordermanage():
         db = myDB(current_app.config['DBPATH'])
         id = request.form.get('id')
         db.deleteorder(id)
+        db.updateExpAndPoint(id)
         del db
         return redirect(url_for('adminBlue.orderindex'))
 
